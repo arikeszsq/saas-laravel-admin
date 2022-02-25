@@ -49,8 +49,8 @@
             <button type="button" class="submit">获取额度</button>
         </div>
         <div class="tijiao_a">
-            <div class="yinshi_a"><input type="checkbox" id="checkbox-id" checked class="agree"/></div>
-            <div class="yinshi_b"><span class="agree_txt">我同意</span><a href="#">《隐私政策》</a></div>
+{{--            <div class="yinshi_a"><input type="checkbox" id="checkbox-id" checked class="agree"/></div>--}}
+{{--            <div class="yinshi_b"><span class="agree_txt">我同意</span><a href="#">《隐私政策》</a></div>--}}
             <div class="wxts">
                 温馨提示<br/>
                 1、获取额度请本人操作并提供真实有效的信息，相关信息将作为您信用评价的重要因素<br/>
@@ -69,12 +69,12 @@
         var user_name = $('.username').val();
         var mobile = $('.mobile').val();
         var error = 0;
-
-        if ($('#checkbox-id').is(':checked')) {
-        } else {
-            $('.agree_txt').css("color", "red");
-            return false;
-        }
+        //
+        // if ($('#checkbox-id').is(':checked')) {
+        // } else {
+        //     $('.agree_txt').css("color", "red");
+        //     return false;
+        // }
 
         if (!company_name) {
             $(".company_name").parent().parent().find('.notice').html("请输入公司名称！");
