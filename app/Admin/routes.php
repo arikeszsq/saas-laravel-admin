@@ -17,6 +17,8 @@ Route::group([
     $router->resource('manage', 'ManageController');
     $router->resource('analysis', 'AnalysisController');
 
+    /** 进件选择栏目列表 **/
+    $router->resource('user-code-options', UserCodeOptionController::class);
     /** 进件 **/
     $router->resource('add-user-codes', AddUserCodeController::class);
     /** 客户 **/
