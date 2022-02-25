@@ -1,111 +1,64 @@
-<html>
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <title>拓客</title>
     <script src="/static/jQuery/jQuery-2.1.4.min.js"></script>
     <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
     <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <link href="/static/web/common/common.css" rel="stylesheet" type="text/css"/>
 
-    <link rel="stylesheet" href="/static/css/index.css">
 </head>
 <body>
-<style>
+<div class="top_head"><img src="{{$image}}"/></div>
+<div class="top_n01 c">请输入您的基本信息</div>
+<div class="top_n02 c">请确认您输入的基本信息是真实有效的</div>
 
-    body {
-        background-color: {{$color}};
-    }
+<input type="hidden" id="web_id" value="{{$web_id}}">
 
-    .input-group {
-        margin-top: 20px;
-    }
+<div class="con_nr c">
+    <div class="con_nra c">
+        <ul>
+            <li>
+                <div class="con_nra_l">公司名称：</div>
+                <div class="con_nra_r"><input type="text" class="company_name" name="fname" placeholder="请输入您的公司名称"/>
+                </div>
+                <div class="c"></div>
+                <span class="notice"></span>
+            </li>
 
-    .banner {
-        height: 220px;
-        width: 100%;
-        display: flex;
-        align-items: center;
-    }
+            <li>
+                <div class="con_nra_l">您的姓名：</div>
+                <div class="con_nra_r"><input type="text" class="username" name="fname" placeholder="请输入您的姓名"/></div>
+                <div class="c"></div>
+                <span class="notice"></span>
+            </li>
 
-    .banner img {
-        width: 100%;
-        align-items: center;
-    }
+            <li>
+                <div class="con_nra_l">联系电话：</div>
+                <div class="con_nra_r"><input type="text" class="mobile" name="fname" placeholder="请输入您的电话"/></div>
+                <div class="c"></div>
+                <span class="notice"></span>
+            </li>
 
-    .input-group {
-        width: 100%;
-    }
+        </ul>
 
-    .need::before {
-        margin-right: 3px;
-        padding-top: 2px;
-        color: red;
-        content: '*';
-    }
-
-    input {
-        width: 100%;
-        border: 0;
-        outline: none;
-        background-color: rgba(0, 0, 0, 0);
-        font-size: 12px;
-        height: 40px;
-        border-radius: 4px;
-        border-bottom: 1px solid #c8cccf;
-        color: #986655;
-        outline: 0;
-        text-align: left;
-        padding-left: 10px;
-        display: block;
-        cursor: pointer;
-        box-shadow: 2px 2px 5px 1px #ccc;
-    }
-
-    input::-webkit-input-placeholder {
-        color: #986655;
-        font-size: 12px;
-    }
-
-    .submit-button {
-        margin-top: 20px;
-        text-align: center;
-    }
-
-    .notice {
-        color: red;
-    }
-
-</style>
-
-<div class="banner">
-    <img src="{{$image}}" alt="">
-</div>
-
-<div class="form-submit" style="width: 96%;margin-left: 2%;">
-    <input type="hidden" id="web_id" value="{{$web_id}}">
-    <div class="input-group">
-        <label class="need">公司名称</label>
-        <input type="text" class="company_name" placeholder="请输入公司名称" aria-describedby="basic-addon1">
-        <span class="notice"></span>
-    </div>
-    <div class="input-group">
-        <label class="need">联系人</label>
-        <input type="text" class="username" placeholder="请输入联系人" aria-describedby="basic-addon1">
-        <span class="notice"></span>
-    </div>
-    <div class="input-group">
-        <label class="need">联系电话</label>
-        <input type="text" class="mobile" placeholder="请输入联系电话" aria-describedby="basic-addon1">
-        <span class="notice"></span>
-    </div>
-    <div class="input-group">
-        <label class="need">身份证号码</label>
-        <input type="text" class="id_card" placeholder="请输入身份证号码" aria-describedby="basic-addon1">
-        <span class="notice"></span>
-    </div>
-    <div class="submit-button">
-        <button class="btn btn-info submit">提交</button>
+        <div class="tijiao">
+            <button type="button" class="submit">获取额度</button>
+        </div>
+        <div class="tijiao_a">
+            <div class="yinshi_a"><input type="checkbox" id="checkbox-id" checked class="agree"/></div>
+            <div class="yinshi_b"><span class="agree_txt">我同意</span><a href="#">《隐私政策》</a></div>
+            <div class="wxts">
+                温馨提示<br/>
+                1、获取额度请本人操作并提供真实有效的信息，相关信息将作为您信用评价的重要因素<br/>
+                2、贷款资金不能用于购房、投资等金融监管违禁领域<br/>
+                3、我行从未委托第三方收取任何费用，贷款申请无中介费<br/>
+                4、如遇问题，请联系金城银行企业金融官方客服
+            </div>
+        </div>
     </div>
 </div>
 
@@ -115,38 +68,34 @@
         var company_name = $('.company_name').val();
         var user_name = $('.username').val();
         var mobile = $('.mobile').val();
-        var id_card = $('.id_card').val();
-
         var error = 0;
+
+        if ($('#checkbox-id').is(':checked')) {
+        } else {
+            $('.agree_txt').css("color", "red");
+            return false;
+        }
+
         if (!company_name) {
-            $(".company_name").parent().find('.notice').html("请输入公司名称！");
+            $(".company_name").parent().parent().find('.notice').html("请输入公司名称！");
             $(".company_name").focus();
             error++;
         } else {
-            $(".company_name").parent().find('.notice').html("");
+            $(".company_name").parent().parent().find('.notice').html("");
         }
         if (!user_name) {
-            $(".username").parent().find('.notice').html("请输入联系人！");
+            $(".username").parent().parent().find('.notice').html("请输入联系人！");
             $(".username").focus();
             error++;
         } else {
-            $(".username").parent().find('.notice').html("");
+            $(".username").parent().parent().find('.notice').html("");
         }
         if (!(/^1[23456789]\d{9}$/.test(mobile))) {
-            $(".mobile").parent().find('.notice').html("请输入合法手机号！");
+            $(".mobile").parent().parent().find('.notice').html("请输入合法手机号！");
             $(".mobile").focus();
             error++;
         } else {
-            $(".mobile").parent().find('.notice').html("");
-        }
-
-        var regIdNo = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
-        if (!regIdNo.test(id_card)) {
-            $(".id_card").parent().find('.notice').html("请输入合法身份证号码！");
-            $(".id_card").focus();
-            error++;
-        } else {
-            $(".id_card").parent().find('.notice').html("");
+            $(".mobile").parent().parent().find('.notice').html("");
         }
 
         if (error > 0) {
@@ -161,7 +110,6 @@
                 'company_name': company_name,
                 'user_name': user_name,
                 'mobile': mobile,
-                'id_card': id_card,
             },
             success: function (res) {
                 if (res.msg_code == 100000) {
@@ -174,3 +122,4 @@
     })
 </script>
 </body>
+</html>

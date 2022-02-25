@@ -15,20 +15,31 @@ class IndexController extends Controller
         $web_id = isset($inputs['web_id']) && $inputs['web_id'] ? $inputs['web_id'] : 0;
         $id = isset($inputs['id']) && $inputs['id'] ? $inputs['id'] : 0;
         if ($web_id) {
+            //有具体公司的拓客页面
             $obj = AddUserCode::query()->where('id', $id)->first();
             $data_index = [
-                'color' => $obj->body_color,
-                'image' => $obj->banner_img,
+                'image' => $obj->banner_img ?? '/static/web/images/banner.png',
                 'web_id' => $obj->web_id,
             ];
             return view('index', $data_index);
         } else {
-            $user = User::query()->find($id);
-            $data_update = [
-                'id' => $id,
-                'company_name' => $user->company_name,
-            ];
-            return view('update', $data_update);
+            if ($id) {
+                //更新页面信息
+                $user = User::query()->find($id);
+                $data_update = [
+                    'id' => $id,
+                    'company_name' => $user->company_name,
+                ];
+
+                return view('update', $data_update);
+            } else {
+                //什么都没有的，默认的拓客页面
+                $data_index = [
+                    'image' => '/static/web/images/banner.png',
+                    'web_id' => 1
+                ];
+                return view('index', $data_index);
+            }
         }
     }
 
@@ -38,13 +49,11 @@ class IndexController extends Controller
         $validator = \Validator::make($inputs, [
             'company_name' => 'required',
             'user_name' => 'required',
-            'mobile' => 'required',
-            'id_card' => 'required'
+            'mobile' => 'required'
         ], [
             'company_name' => '企业名称必填',
             'user_name' => '联系人必填',
-            'mobile' => '手机号必填',
-            'id_card' => '身份证号码必填'
+            'mobile' => '手机号必填'
         ]);
         if ($validator->fails()) {
             return self::parametersIllegal($validator->messages()->first());
@@ -55,7 +64,6 @@ class IndexController extends Controller
                 'company_name' => $inputs['company_name'],
                 'user_name' => $inputs['user_name'],
                 'mobile' => $inputs['mobile'],
-                'id_card' => $inputs['id_card'],
             ];
             $ret = DB::table('jf_user')->insert($data);
             User::addLinkUrl();
