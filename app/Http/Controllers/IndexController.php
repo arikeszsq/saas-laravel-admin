@@ -14,7 +14,7 @@ class IndexController extends Controller
         $inputs = $request->all();
         $web_id = isset($inputs['web_id']) && $inputs['web_id'] ? $inputs['web_id'] : 0;
         $id = isset($inputs['id']) && $inputs['id'] ? $inputs['id'] : 0;
-        if ($web_id) {
+        if ($web_id || $web_id == 0) {
             //有具体公司的拓客页面
             $obj = AddUserCode::query()->where('id', $id)->first();
             $data_index = [
@@ -28,7 +28,7 @@ class IndexController extends Controller
                 $user = User::query()->find($id);
                 $data_update = [
                     'id' => $id,
-                    'company_name' => $user->company_name,
+                    'company_name' => $user->company_name ?? '',
                 ];
 
                 return view('update', $data_update);
@@ -36,7 +36,7 @@ class IndexController extends Controller
                 //什么都没有的，默认的拓客页面
                 $data_index = [
                     'image' => '/static/web/images/banner.png',
-                    'web_id' => 1
+                    'web_id' => 0
                 ];
                 return view('index', $data_index);
             }
