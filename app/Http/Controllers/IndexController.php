@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AddUserCode;
 use App\Models\User;
+use App\Models\UserCodeOption;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -17,8 +18,9 @@ class IndexController extends Controller
         if ($web_id || $web_id == 0) {
             //有具体公司的拓客页面
             $obj = AddUserCode::query()->where('id', $id)->first();
+            $option = UserCodeOption::query()->find($obj->option_id);
             $data_index = [
-                'image' => $obj->banner_img ?? '/static/web/images/banner.png',
+                'image' => $option->banner ?? '/static/web/images/banner.png',
                 'web_id' => $obj->web_id,
             ];
             return view('index', $data_index);
