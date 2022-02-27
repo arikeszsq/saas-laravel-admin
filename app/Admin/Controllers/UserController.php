@@ -31,9 +31,7 @@ class UserController extends AdminController
         $grid = new Grid(new User());
         $grid->quickSearch('user_name');
 
-        $grid->tools(function (Grid\Tools $tools) {
-            $tools->append(new ImportPost());
-        });
+
 
         $grid->filter(function($filter){
             // 去掉默认的id过滤器

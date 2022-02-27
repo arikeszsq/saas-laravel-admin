@@ -31,6 +31,13 @@ Route::group([
     $router->resource('web-users', WebUserController::class);
 
 
+
+
+    /** 资源库，基础用户数据 **/
+    $router->resource('user-excels', UserExcelController::class);
+    $router->resource('user-call', UserCallController::class);
+
+
     $router->resource('user-logs', UserLogController::class);
     $router->resource('areas', AreaController::class);
     $router->resource('codes', CodeController::class);
