@@ -33,8 +33,8 @@ class AddUserCodeController extends AdminController
         $grid->model()->orderBy('id', 'desc');
         $grid->column('id', 'ID')->sortable();
         $grid->column('title', __('名称'));
-        $grid->column('qcode_pic', __('进件二维码'))->image('',100,100);
-        $grid->column('qcode_pic_has_bg', __('进件二维码'))->image();
+        $grid->column('qcode_pic', __('进件二维码'))->image('',60,60);
+        $grid->column('qcode_pic_has_bg', __('进件二维码'))->image('',40,80);
         $grid->column('created_at', __('创建时间'));
         return $grid;
     }
