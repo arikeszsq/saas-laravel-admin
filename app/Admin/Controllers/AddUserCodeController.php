@@ -33,8 +33,8 @@ class AddUserCodeController extends AdminController
         $grid->model()->orderBy('id', 'desc');
         $grid->column('id', 'ID')->sortable();
         $grid->column('title', __('名称'));
-        $grid->column('qcode_pic', __('进件二维码'))->gravatar();
-        $grid->column('qcode_pic_has_bg', __('进件二维码'))->gravatar();
+        $grid->column('qcode_pic', __('进件二维码'))->image('',100,100);
+        $grid->column('qcode_pic_has_bg', __('进件二维码'))->image();
         $grid->column('created_at', __('创建时间'));
         return $grid;
     }
@@ -89,11 +89,15 @@ class AddUserCodeController extends AdminController
         $form->saved(function (Form $form) {
             $id = $form->model()->id;
             $url = env('APP_URL') . '?type=1&id=' . $id;
-            $form->model()->qcode_pic = Qcode::qrcode($url);
+
             $option_id = $form->model()->option_id;
             $option = UserCodeOption::query()->find($option_id);
             $bg_url = $option->code_bg_img;
+
             $form->model()->qcode_pic_has_bg = Qcode::qrcodeWithBg($url, $bg_url);
+
+            $form->model()->qcode_pic = Qcode::qrcode($url);
+
             $form->model()->scan_to_url = $url;
             $option = UserCodeOption::query()->find($form->model()->option_id);
             $form->model()->title = $option->title;
