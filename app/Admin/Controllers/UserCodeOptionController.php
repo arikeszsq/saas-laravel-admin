@@ -29,6 +29,7 @@ class UserCodeOptionController extends AdminController
         $grid->column('id', __('ID'))->sortable();
         $grid->column('title', __('名称'));
         $grid->column('banner', __('轮播图'))->image();
+        $grid->column('code_bg_img', __('二维码背景图'))->image();
         $grid->column('bak', __('备注'));
         $grid->column('created_at', __('创建时间'));
 
@@ -48,6 +49,7 @@ class UserCodeOptionController extends AdminController
         $show->field('id', __('Id'));
         $show->field('title', __('名称'));
         $show->field('banner', __('轮播图'))->avatar()->image();
+        $show->field('code_bg_img', __('二维码背景图'))->avatar()->image();
         $show->field('bak', __('备注'));
 
         return $show;
@@ -64,6 +66,7 @@ class UserCodeOptionController extends AdminController
 
         $form->text('title', __('名称'))->required();
         $form->image('banner', __('轮播图'))->required();
+        $form->image('code_bg_img', __('二维码背景图'))->required();
         $form->textarea('bak', __('备注'));
         $form->saving(function (Form $form) {
             if ($form->isCreating()) {

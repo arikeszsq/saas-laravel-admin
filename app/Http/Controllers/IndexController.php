@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AddUserCode;
 use App\Models\User;
 use App\Models\UserCodeOption;
+use App\Models\UserTK;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -13,35 +14,28 @@ class IndexController extends Controller
     public function index(Request $request)
     {
         $inputs = $request->all();
-        $web_id = isset($inputs['web_id']) && $inputs['web_id'] ? $inputs['web_id'] : 0;
-        $id = isset($inputs['id']) && $inputs['id'] ? $inputs['id'] : 0;
-        if ($web_id || $web_id == 0) {
-            //有具体公司的拓客页面
-            $obj = AddUserCode::query()->where('id', $id)->first();
-            $option = UserCodeOption::query()->find($obj->option_id);
-            $data_index = [
-                'image' => $option->banner ?? '/static/web/images/banner.png',
-                'web_id' => $obj->web_id,
+        $type = isset($inputs['type']) && $inputs['type'] ? $inputs['type'] : 1;
+        if ($type == 1) {
+            //拓客码
+            $id = isset($inputs['type']) && $inputs['type'] ? $inputs['type'] : 0;
+            $data = [
+                'image' => '/static/web/images/banner.png',
+                'web_id' => 1,
+                'master_id' => 1
             ];
-            return view('index', $data_index);
-        } else {
             if ($id) {
-                //更新页面信息
-                $user = User::query()->find($id);
-                $data_update = [
-                    'id' => $id,
-                    'company_name' => $user->company_name ?? '',
+                $obj = AddUserCode::query()->where('id', $id)->first();
+                $master_id = $obj->user_id;
+                $web_id = $obj->web_id;
+                $option_id = $obj->option_id;
+                $option = UserCodeOption::query()->find($option_id);
+                $data = [
+                    'image' => $option->banner ?? '/static/web/images/banner.png',
+                    'web_id' => $web_id,
+                    'master_id' => $master_id
                 ];
-
-                return view('update', $data_update);
-            } else {
-                //什么都没有的，默认的拓客页面
-                $data_index = [
-                    'image' => '/static/web/images/banner.png',
-                    'web_id' => 0
-                ];
-                return view('index', $data_index);
             }
+            return view('index', $data);
         }
     }
 
@@ -63,12 +57,12 @@ class IndexController extends Controller
         try {
             $data = [
                 'web_id' => $inputs['web_id'],
+                'master_id' => $inputs['master_id'],
                 'company_name' => $inputs['company_name'],
                 'user_name' => $inputs['user_name'],
                 'mobile' => $inputs['mobile'],
             ];
-            $ret = DB::table('jf_user')->insert($data);
-            User::addLinkUrl();
+            $ret = UserTK::query()->insert($data);
             return self::success($ret);
         } catch (\Exception $e) {
             return self::error($e->getCode(), $e->getMessage());

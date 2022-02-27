@@ -17,10 +17,15 @@ Route::group([
     $router->resource('manage', 'ManageController');
     $router->resource('analysis', 'AnalysisController');
 
-    /** 进件选择栏目列表 **/
+
+
+    /** 拓客选择栏目列表 **/
     $router->resource('user-code-options', UserCodeOptionController::class);
-    /** 进件 **/
+    /** 拓客 **/
     $router->resource('add-user-codes', AddUserCodeController::class);
+    /** 拓客客户列表 **/
+    $router->resource('user-ks', UserTKController::class);
+
     /** 客户 **/
     $router->resource('users', UserController::class);
 
@@ -31,11 +36,12 @@ Route::group([
     $router->resource('web-users', WebUserController::class);
 
 
-
-
     /** 资源库，基础用户数据 **/
     $router->resource('user-excels', UserExcelController::class);
+    /** 资源库，crm呼叫系统 **/
     $router->resource('user-call', UserCallController::class);
+    /** 资源库，意向客户 **/
+    $router->resource('user-intentions', UserIntentionController::class);
 
 
     $router->resource('user-logs', UserLogController::class);

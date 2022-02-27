@@ -17,6 +17,7 @@
 <div class="top_n02 c">请确认您输入的基本信息是真实有效的</div>
 
 <input type="hidden" id="web_id" value="{{$web_id}}">
+<input type="hidden" id="master_id" value="{{$master_id}}">
 
 <div class="con_nr c">
     <div class="con_nra c">
@@ -49,8 +50,8 @@
             <button type="button" class="submit">获取额度</button>
         </div>
         <div class="tijiao_a">
-{{--            <div class="yinshi_a"><input type="checkbox" id="checkbox-id" checked class="agree"/></div>--}}
-{{--            <div class="yinshi_b"><span class="agree_txt">我同意</span><a href="#">《隐私政策》</a></div>--}}
+            {{--            <div class="yinshi_a"><input type="checkbox" id="checkbox-id" checked class="agree"/></div>--}}
+            {{--            <div class="yinshi_b"><span class="agree_txt">我同意</span><a href="#">《隐私政策》</a></div>--}}
             <div class="wxts">
                 温馨提示<br/>
                 1、获取额度请本人操作并提供真实有效的信息，相关信息将作为您信用评价的重要因素<br/>
@@ -106,6 +107,7 @@
             type: 'post',
             url: '/api/add',
             data: {
+                'master_id': $('#master_id').val(),
                 'web_id': $('#web_id').val(),
                 'company_name': company_name,
                 'user_name': user_name,

@@ -13,10 +13,10 @@
 
 
     .container_zong {
-        margin-right: 5%;
         width: 30%;
         padding: 2%;
         background: #fff;
+        margin-left: 3%;
     }
 
     .container_sss h1 {
@@ -127,6 +127,7 @@
     }
 
     .list_item {
+        margin-right: 3%;
         max-height: 800px;
         overflow: auto;
         scroll-behavior: auto;
@@ -161,47 +162,56 @@
 
 </style>
 <div class="container-01 clearfix">
-    <div class="left list_item">
+    <div class="right list_item">
         <ul>
             <li class="already"><span>公司名词</span><span>用户名</span><span>18115676166</span><span>新用户</span></li>
-            <li class="already"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>已拨号</span></li>
-            <li class="already"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>已拨号</span></li>
-            <li class="already"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>已拨号</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
-            <li><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></li>
+            <li class="already"><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>已拨号</span></a></li>
+            <li class="already"><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>已拨号</span></a></li>
+            <li class="already"><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>已拨号</span></a></li>
+            <li class="already"><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>已拨号</span></a></li>
+            <li class="already"><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>已拨号</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
+            <li><a href="/admin/user-call?user_id=10"><span>公司名词</span><span>刘彻</span><span>18115676166</span><span>新用户</span></a></li>
 
         </ul>
     </div>
-    <div class="container_zong right">
+    <div class="container_zong left">
 
         <form class="container_sss">
             <div class="form-item">
