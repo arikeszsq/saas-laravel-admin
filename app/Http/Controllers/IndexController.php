@@ -61,6 +61,8 @@ class IndexController extends Controller
                 'company_name' => $inputs['company_name'],
                 'user_name' => $inputs['user_name'],
                 'mobile' => $inputs['mobile'],
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time()),
             ];
             $ret = UserTK::query()->insert($data);
             return self::success($ret);
