@@ -121,11 +121,18 @@ input:checked ~ span {
     width: 60%;
 }
 
-.list_item li:first-child {
-    background: #3c8dbc;
-    color: #fff;
-    line-height: 45px;
-    height: 45px;
+/*.list_item li:first-child {*/
+/*    background: #3c8dbc;*/
+/*    color: #fff;*/
+/*    line-height: 45px;*/
+/*    height: 45px;*/
+/*}*/
+
+.li_title{
+        background: #3c8dbc;
+        color: #fff;
+        line-height: 45px;
+        height: 45px;
 }
 
 .list_item li span {

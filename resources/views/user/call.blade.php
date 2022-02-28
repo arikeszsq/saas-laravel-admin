@@ -12,8 +12,8 @@
 <body>
 <div class="container-01 clearfix">
     <div class="right list_item">
-        <ul>
-            <li><span>公司名词</span><span>用户名</span><span>18115676166</span></li>
+        <li class="li_title"><span>公司名词</span><span>用户名</span><span>手机号</span></li>
+        <ul class="user-info-list">
             @foreach ($users as $k => $val)
                 <li class="user-info"
                     data-id={{ $val['id'] }}
@@ -58,9 +58,9 @@
             <div class="form-item"><textarea class="txt" placeholder="请填写备注"></textarea></div>
         </form>
         <div class="button-list">
-            <button class="btn btn-success">开始自动拨号</button>
+            <button id="batch_call" class="btn btn-success">开始自动拨号</button>
             <button class="btn btn-danger">停止自动拨号</button>
-            <button  class="btn btn-info">拨号</button>
+            <button class="btn btn-info">拨号</button>
             <button id="call" class="btn btn-danger">挂断</button>
             <button id="hangup" class="btn btn-primary">转为意向客户</button>
         </div>
@@ -79,77 +79,84 @@
         $('.form-mobile').val(mobile);
     });
 
+    $('#batch_call').click(function () {
+        $(".user-info-list li").each(function (index, key) {
+            console.log($(this));
+        })
+    });
+
     function callMobile(mobile) {
 
     }
 
-    var callout_cb;
 
-    init();
-
-    function init() {
-        getWebsocket();
-    }
-
-    $('#call').click(function () {
-        var no = $('.form-mobile').val();
-        
-        Call(no);
-    });
-
-    $('#hangup').click(function () {
-        ws.send(JSON.stringify({ action: 'Hangup', cb: new Date().getTime() }));
-        ws.onmessage = function (event) {
-            console.log("message", event.data);
-        };
-        ws.onerror = function () {
-            console.log("error");
-        }
-    });
-    $('#next').click(function () {
-        ws.send(JSON.stringify({action: 'SimNext', cb:new Date().getTime()}));
-        ws.onmessage = function (event) {
-            console.log("message", event.data);
-        };
-        ws.onerror = function () {
-            console.log("error");
-        }
-    });
-    function Call(number) {
-        console.log(number);
-        if (!ws) {
-            alert("控件未初始化");
-            return false;
-        }
-
-        callout_cb = 'CallOut_cb_' + new Date().getTime();
-
-        var action = {
-            action: 'CallOut',
-            number: number,
-            cb: callout_cb
-        };
-        ws.send(JSON.stringify(action));
-        //收到服务端消息
-        ws.onmessage = function (event) {
-            console.log("message", event.data);
-        };
-        //发生错误
-        ws.onerror = function () {
-            console.log("error");
-        }
-
-    }
-    function getWebsocket() {
-        ws = new WebSocket('ws://127.0.0.1:8090/APP_2AD85C71-BEF8-463C-9B4B-B672F603542A_fast');
-        ws.onerror = function (event) {
-            alert(event.data);
-        };
-        ws.onclose = function (event) {
-        };
-        ws.onopen = function () {
-            alert('初始化设备成功');
-        }
-    }
+    // var callout_cb;
+    //
+    // init();
+    //
+    // function init() {
+    //     getWebsocket();
+    // }
+    //
+    // $('#call').click(function () {
+    //     var no = $('.form-mobile').val();
+    //
+    //     Call(no);
+    // });
+    //
+    // $('#hangup').click(function () {
+    //     ws.send(JSON.stringify({ action: 'Hangup', cb: new Date().getTime() }));
+    //     ws.onmessage = function (event) {
+    //         console.log("message", event.data);
+    //     };
+    //     ws.onerror = function () {
+    //         console.log("error");
+    //     }
+    // });
+    // $('#next').click(function () {
+    //     ws.send(JSON.stringify({action: 'SimNext', cb:new Date().getTime()}));
+    //     ws.onmessage = function (event) {
+    //         console.log("message", event.data);
+    //     };
+    //     ws.onerror = function () {
+    //         console.log("error");
+    //     }
+    // });
+    // function Call(number) {
+    //     console.log(number);
+    //     if (!ws) {
+    //         alert("控件未初始化");
+    //         return false;
+    //     }
+    //
+    //     callout_cb = 'CallOut_cb_' + new Date().getTime();
+    //
+    //     var action = {
+    //         action: 'CallOut',
+    //         number: number,
+    //         cb: callout_cb
+    //     };
+    //     ws.send(JSON.stringify(action));
+    //     //收到服务端消息
+    //     ws.onmessage = function (event) {
+    //         console.log("message", event.data);
+    //     };
+    //     //发生错误
+    //     ws.onerror = function () {
+    //         console.log("error");
+    //     }
+    //
+    // }
+    // function getWebsocket() {
+    //     ws = new WebSocket('ws://127.0.0.1:8090/APP_2AD85C71-BEF8-463C-9B4B-B672F603542A_fast');
+    //     ws.onerror = function (event) {
+    //         alert(event.data);
+    //     };
+    //     ws.onclose = function (event) {
+    //     };
+    //     ws.onopen = function () {
+    //         alert('初始化设备成功');
+    //     }
+    // }
 </script>
 </body>
