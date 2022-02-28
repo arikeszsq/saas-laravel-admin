@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\Actions\Post\BatchAssign;
 use App\Admin\Actions\Post\ImportPost;
 use App\Models\UserExcel;
 use Encore\Admin\Controllers\AdminController;
@@ -31,17 +32,35 @@ class UserExcelController extends AdminController
             $tools->append(new ImportPost());
         });
 
-        $grid->column('id', __('Id'));
-        $grid->column('web_id', __('Web id'));
-        $grid->column('user_id', __('User id'));
-        $grid->column('master_Id', __('Master Id'));
-        $grid->column('company_name', __('Company name'));
-        $grid->column('user_name', __('User name'));
-        $grid->column('mobile', __('Mobile'));
-        $grid->column('status', __('Status'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
+        if (!self::isSuperAdmin()) {
+            $grid->model()->where('web_id', static::webId());
+            if (!self::isWebAdmin()) {
+                $grid->model()->where('master_id', static::userId());
+            }
+        }
 
+        $grid->filter(function ($filter) {
+            // 去掉默认的id过滤器
+            $filter->disableIdFilter();
+            $filter->column(1 / 2, function ($filter) {
+                $filter->like('company_name', '企业名称');
+                $filter->like('user_name', '联系人');
+            });
+            $filter->column(1 / 2, function ($filter) {
+                $filter->like('mobile', '手机号');
+            });
+        });
+
+        $grid->column('id', __('Id'))->sortable();
+        $grid->column('company_name', __('公司名称'));
+        $grid->column('user_name', __('姓名'));
+        $grid->column('mobile', __('手机号'));
+        $grid->column('created_at', __('添加时间'));
+
+
+        $grid->batchActions(function ($batch) {
+            $batch->add(new BatchAssign());
+        });
         return $grid;
     }
 
@@ -54,18 +73,9 @@ class UserExcelController extends AdminController
     protected function detail($id)
     {
         $show = new Show(UserExcel::findOrFail($id));
-
-        $show->field('id', __('Id'));
-        $show->field('web_id', __('Web id'));
-        $show->field('user_id', __('User id'));
-        $show->field('master_Id', __('Master Id'));
-        $show->field('company_name', __('Company name'));
-        $show->field('user_name', __('User name'));
-        $show->field('mobile', __('Mobile'));
-        $show->field('status', __('Status'));
-        $show->field('created_at', __('Created at'));
-        $show->field('updated_at', __('Updated at'));
-
+        $show->field('company_name', __('公司名称'));
+        $show->field('user_name', __('姓名'));
+        $show->field('mobile', __('手机号'));
         return $show;
     }
 
@@ -78,13 +88,16 @@ class UserExcelController extends AdminController
     {
         $form = new Form(new UserExcel());
 
-        $form->number('web_id', __('Web id'));
-        $form->number('user_id', __('User id'));
-        $form->number('master_Id', __('Master Id'));
-        $form->text('company_name', __('Company name'));
-        $form->text('user_name', __('User name'));
-        $form->mobile('mobile', __('Mobile'));
-        $form->number('status', __('Status'));
+        $form->text('company_name', __('公司名称'));
+        $form->text('user_name', __('姓名'));
+        $form->mobile('mobile', __('手机号'));
+        $form->saving(function (Form $form) {
+            if ($form->isCreating()) {
+                $form->model()->web_id = self::webId();
+                $form->model()->user_id = self::userId();
+                $form->model()->master_id = self::userId();
+            }
+        });
 
         return $form;
     }

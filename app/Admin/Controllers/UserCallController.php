@@ -15,10 +15,13 @@ class UserCallController extends Controller
 
     public function index(Content $content)
     {
-        $users = UserExcel::query()->get();
+        $users = UserExcel::query()->where('call_no', 0)
+            ->orderBy('id', 'desc')
+            ->limit(50)
+            ->get();
 
         return $content->title('详情')
             ->description('简介')
-            ->view('user.call', $users->toArray());
+            ->view('user.call', ['users' => $users->toArray()]);
     }
 }

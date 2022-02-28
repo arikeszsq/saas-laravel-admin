@@ -3,6 +3,7 @@
 namespace App\Admin\Actions\Post;
 
 use App\Models\AdminUser;
+use App\Models\UserExcel;
 use App\Traits\UserTrait;
 use Encore\Admin\Actions\BatchAction;
 use Illuminate\Database\Eloquent\Collection;
@@ -13,10 +14,15 @@ class BatchAssign extends BatchAction
     use UserTrait;
     public $name = '批量分配';
 
-    public function handle(Collection $collection,Request $request)
+    public function handle(Collection $collection, Request $request)
     {
         $admin_id = $request->get('admin_id');
         $key = $request->get('_key');
+        $id_array = explode(',', $key);
+        UserExcel::query()->whereIn('id', $id_array)->update([
+            'master_id' => $admin_id
+        ]);
+
         return $this->response()->success('Success')->refresh();
     }
 

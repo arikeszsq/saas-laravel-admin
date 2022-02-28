@@ -3,6 +3,7 @@
 namespace App\Admin\Actions\Post;
 
 use App\Models\User;
+use App\Models\UserExcel;
 use App\Traits\UserTrait;
 use Encore\Admin\Actions\Action;
 use Encore\Admin\Facades\Admin;
@@ -39,13 +40,18 @@ class ImportPost extends Action
         $data = [];
         $i = 0;
         for ($j = 2; $j <= $highestRow; $j++) {
-            $data[$i]['user_name'] = $sheet->getCell("A" . $j)->getValue();
-            $data[$i]['mobile'] = $sheet->getCell("B" . $j)->getValue();
+            $data[$i]['company_name'] = $sheet->getCell("A" . $j)->getValue();
+            $data[$i]['user_name'] = $sheet->getCell("B" . $j)->getValue();
+            $data[$i]['mobile'] = $sheet->getCell("C" . $j)->getValue();
             $data[$i]['web_id'] = static::webId();
+            $data[$i]['user_id'] = static::userId();
+            $data[$i]['master_id'] = static::userId();
+            $data[$i]['created_at'] = date('Y-m-d H:i:s',time());
+            $data[$i]['updated_at'] = date('Y-m-d H:i:s',time());
             $i++;
         }
         try {
-            User::query()->insert($data);
+            UserExcel::query()->insert($data);
             return $this->response()->success('成功导入' . count($data) . '条数据')->refresh();
         } catch (\Exception $exception) {
             admin_error('导入失败，请检查数据格式' . $exception->getMessage());
