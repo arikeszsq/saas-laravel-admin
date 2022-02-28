@@ -26,14 +26,23 @@ Route::group([
     /** 拓客客户列表 **/
     $router->resource('user-ks', UserTKController::class);
 
-    /** 客户 **/
-    $router->resource('users', UserController::class);
 
     /** 站点管理 **/
     $router->resource('webs', WebController::class);
-
     /** 站点平台用户 **/
     $router->resource('web-users', WebUserController::class);
+    /** 站点大区管理 **/
+    $router->resource('areas', AreaController::class);
+
+
+
+
+
+
+    /** 客户 **/
+    $router->resource('users', UserController::class);
+
+
 
 
     /** 资源库，基础用户数据 **/
@@ -45,7 +54,7 @@ Route::group([
 
 
     $router->resource('user-logs', UserLogController::class);
-    $router->resource('areas', AreaController::class);
+
     $router->resource('codes', CodeController::class);
     $router->resource('company', CompanyController::class);
 

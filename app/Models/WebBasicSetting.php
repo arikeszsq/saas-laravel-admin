@@ -2,36 +2,36 @@
 
 namespace App\Models;
 
-use App\Traits\UserTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Area extends Model
+class WebBasicSetting extends Model
 {
 
-    use UserTrait;
+    const Static_职位选项 = 1;
 
-    protected $table = 'jf_web_area';
+    protected $table = 'jf_web_basic_setting';
 
     public function getCreatedAtAttribute($value)
     {
         return Carbon::parse($value)->format('Y-m-d');
     }
 
-    public static function getAreaList()
+    public static function getJobRoleList($type)
     {
-        return Area::query()->where('web_id', static::webId())->get();
+        return WebBasicSetting::query()->where('type', $type)->get();
     }
 
-    public static function getAreaArray()
+    public static function getJobRoleArray($type)
     {
-        $list = self::getAreaList();
+        $list = self::getJobRoleList($type);
         $data = [];
         foreach ($list as $val) {
-            $data[$val->id] = $val->name;
+            $data[$val->value] = $val->name;
         }
         return $data;
     }
+
 }

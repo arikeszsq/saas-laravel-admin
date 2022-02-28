@@ -3,6 +3,8 @@
 namespace App\Admin\Controllers;
 
 use App\Models\AdminUser;
+use App\Models\Area;
+use App\Models\WebBasicSetting;
 use App\Traits\UserTrait;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
@@ -62,8 +64,15 @@ class WebUserController extends AdminController
             $tools->disableView();
         });
 
+        $roles = WebBasicSetting::getJobRoleArray(WebBasicSetting::Static_职位选项);
+        $areas = Area::getAreaArray();
+
         $form->text('username', __('用户名'))->required();
         $form->text('name', __('名称'))->required();
+
+        $form->select('job_role_id', '职位身份')->options($roles)->required();
+        $form->select('area_id', '大区')->options($areas)->required();
+
         $form->password('password', trans('admin.password'))->rules('confirmed|required');
         $form->password('password_confirmation', trans('admin.password_confirmation'))->rules('required')
             ->default(function ($form) {

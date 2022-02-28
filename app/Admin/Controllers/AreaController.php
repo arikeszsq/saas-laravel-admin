@@ -15,7 +15,7 @@ class AreaController extends AdminController
      *
      * @var string
      */
-    protected $title = 'Area';
+    protected $title = '大区管理';
 
     /**
      * Make a grid builder.
@@ -26,11 +26,12 @@ class AreaController extends AdminController
     {
         $grid = new Grid(new Area());
 
-        $grid->column('id', __('Id'));
-        $grid->column('name', __('Name'));
-        $grid->column('description', __('Description'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
+        $grid->model()->where('web_id', static::webId());
+        $grid->model()->orderBy('id', 'desc');
+        $grid->column('id', __('ID'))->sortable();
+        $grid->column('name', __('名称'));
+        $grid->column('description', __('描述'));
+        $grid->column('created_at', __('创建时间'));
 
         return $grid;
     }
@@ -46,10 +47,9 @@ class AreaController extends AdminController
         $show = new Show(Area::findOrFail($id));
 
         $show->field('id', __('Id'));
-        $show->field('name', __('Name'));
-        $show->field('description', __('Description'));
-        $show->field('created_at', __('Created at'));
-        $show->field('updated_at', __('Updated at'));
+        $show->field('name', __('名称'));
+        $show->field('description', __('描述'));
+        $show->field('created_at', __('创建时间'));
 
         return $show;
     }
@@ -63,9 +63,15 @@ class AreaController extends AdminController
     {
         $form = new Form(new Area());
 
-        $form->text('name', __('Name'));
-        $form->textarea('description', __('Description'));
+        $form->text('name', __('名称'));
+        $form->textarea('description', __('描述'));
 
+        $form->saving(function (Form $form) {
+            if ($form->isCreating()) {
+                $form->model()->web_id = static::webId();
+                $form->model()->user_id = static::userId();
+            }
+        });
         return $form;
     }
 }
