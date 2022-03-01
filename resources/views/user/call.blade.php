@@ -11,9 +11,9 @@
 </head>
 <body>
 <div class="container-01 clearfix">
-    <div class="right list_item">
+    <div class="right list_item user-info-list">
         <li class="li_title"><span>公司名词</span><span>用户名</span><span>手机号</span></li>
-        <ul class="user-info-list">
+        <ul>
             @foreach ($users as $k => $val)
                 <li class="user-info"
                     data-id={{ $val['id'] }}
@@ -80,8 +80,10 @@
     });
 
     $('#batch_call').click(function () {
-        $(".user-info-list li").each(function (index, key) {
-            console.log($(this));
+        $(".user-info-list ul li").each(function (key, item) {
+            var mobile = $(item).data('mobile');
+console.log(mobile);
+            return false;
         })
     });
 
@@ -91,7 +93,6 @@
 
 
     // var callout_cb;
-    //
     // init();
     //
     // function init() {
@@ -105,7 +106,7 @@
     // });
     //
     // $('#hangup').click(function () {
-    //     ws.send(JSON.stringify({ action: 'Hangup', cb: new Date().getTime() }));
+    //     ws.send(JSON.stringify({action: 'Hangup', cb: new Date().getTime()}));
     //     ws.onmessage = function (event) {
     //         console.log("message", event.data);
     //     };
@@ -114,7 +115,7 @@
     //     }
     // });
     // $('#next').click(function () {
-    //     ws.send(JSON.stringify({action: 'SimNext', cb:new Date().getTime()}));
+    //     ws.send(JSON.stringify({action: 'SimNext', cb: new Date().getTime()}));
     //     ws.onmessage = function (event) {
     //         console.log("message", event.data);
     //     };
@@ -122,6 +123,7 @@
     //         console.log("error");
     //     }
     // });
+    //
     // function Call(number) {
     //     console.log(number);
     //     if (!ws) {
@@ -145,12 +147,12 @@
     //     ws.onerror = function () {
     //         console.log("error");
     //     }
-    //
     // }
+    //
     // function getWebsocket() {
     //     ws = new WebSocket('ws://127.0.0.1:8090/APP_2AD85C71-BEF8-463C-9B4B-B672F603542A_fast');
     //     ws.onerror = function (event) {
-    //         alert(event.data);
+    //         alert('初始化设备失败：' + event.data);
     //     };
     //     ws.onclose = function (event) {
     //     };
