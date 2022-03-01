@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'zgldh\\QiniuStorage\\' => array($vendorDir . '/zgldh/qiniu-laravel-storage/src'),
     'voku\\' => array($vendorDir . '/voku/portable-ascii/src/voku'),
     'phpDocumentor\\Reflection\\' => array($vendorDir . '/phpdocumentor/reflection-common/src', $vendorDir . '/phpdocumentor/reflection-docblock/src', $vendorDir . '/phpdocumentor/type-resolver/src'),
     'ZipStream\\' => array($vendorDir . '/maennchen/zipstream-php/src'),
@@ -47,6 +48,7 @@ return array(
     'SimpleSoftwareIO\\QrCode\\' => array($vendorDir . '/simplesoftwareio/simple-qrcode/src'),
     'Ramsey\\Uuid\\' => array($vendorDir . '/ramsey/uuid/src'),
     'Ramsey\\Collection\\' => array($vendorDir . '/ramsey/collection/src'),
+    'Qiniu\\' => array($vendorDir . '/qiniu/php-sdk/src/Qiniu'),
     'Psy\\' => array($vendorDir . '/psy/psysh/src'),
     'Psr\\SimpleCache\\' => array($vendorDir . '/psr/simple-cache/src'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
