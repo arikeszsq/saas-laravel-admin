@@ -8,6 +8,8 @@ use App\Models\UserCodeOption;
 use App\Models\UserTK;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use zgldh\QiniuStorage\QiniuStorage;
 
 class IndexController extends Controller
 {
@@ -136,6 +138,38 @@ class IndexController extends Controller
             $file->move($url_path, $newName);
             return $url_path . $newName;
         }
+    }
+
+
+    public function uploadFile(Request $request)
+    {
+        var_dump($_FILES);
+        var_dump($_POST);
+
+
+        $wenjian = $request->file('file');
+
+
+        //获取文件的扩展名
+        $kuoname = $wenjian->getClientOriginalExtension();
+
+        //获取文件的类型
+        $type = $wenjian->getClientMimeType();
+
+        //获取文件的绝对路径，但是获取到的在本地不能打开
+        $path = $wenjian->getRealPath();
+
+        //要保存的文件名 时间+扩展名
+        $filename = date('Y-m-d-H-i-s') . '_' . uniqid() . '.' . $kuoname;
+
+        $disk = QiniuStorage::disk('qiniu');
+
+        $bool = $disk->put($filename, file_get_contents($path));
+        if ($bool) {
+            $path = $disk->downloadUrl($filename);
+            return '上传成功，url:' . $path;
+        }
+        return '上传失败';
     }
 
 
