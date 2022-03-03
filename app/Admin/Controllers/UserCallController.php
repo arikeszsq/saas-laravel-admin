@@ -20,9 +20,24 @@ class UserCallController extends Controller
             ->limit(50)
             ->get();
 
+        $data = [];
+        foreach ($users as $key => $user) {
+            $data[] = [
+                'key_id' => ($key + 1),
+                'id' => $user->id,
+                'user_id' => $user->user_id,
+                'user_name' => $user->user_name,
+                'mobile' => $user->mobile,
+                'call_no' => $user->call_no,
+                'company_name' => $user->company_name,
+            ];
+        }
+//        return $content->title('详情')
+//            ->description('简介')
+//            ->view('user.call', ['users' => $users->toArray()]);
         return $content->title('详情')
             ->description('简介')
-            ->view('user.call', ['users' => $users->toArray()]);
+            ->view('user.call', ['users' => $data]);
     }
 
 
