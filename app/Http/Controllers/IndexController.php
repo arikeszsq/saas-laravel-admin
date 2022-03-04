@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AddUserCode;
 use App\Models\User;
 use App\Models\UserCodeOption;
+use App\Models\UserExcel;
 use App\Models\UserTK;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,7 @@ use zgldh\QiniuStorage\QiniuStorage;
 
 class IndexController extends Controller
 {
+
     public function index(Request $request)
     {
         $inputs = $request->all();
@@ -167,6 +169,7 @@ class IndexController extends Controller
         }
         return '上传失败';
     }
+
 
 
 }

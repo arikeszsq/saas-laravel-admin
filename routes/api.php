@@ -10,3 +10,5 @@ Route::any('/upload', 'IndexController@upload');
 Route::any('/upload-file', 'IndexController@uploadFile');
 
 
+
+

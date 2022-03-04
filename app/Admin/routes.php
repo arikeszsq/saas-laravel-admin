@@ -18,7 +18,6 @@ Route::group([
     $router->resource('analysis', 'AnalysisController');
 
 
-
     /** 拓客选择栏目列表 **/
     $router->resource('user-code-options', UserCodeOptionController::class);
     /** 拓客 **/
@@ -35,14 +34,8 @@ Route::group([
     $router->resource('areas', AreaController::class);
 
 
-
-
-
-
     /** 客户 **/
     $router->resource('users', UserController::class);
-
-
 
 
     /** 资源库，基础用户数据 **/
@@ -51,6 +44,9 @@ Route::group([
     $router->resource('user-call', UserCallController::class);
     /** 资源库，意向客户 **/
     $router->resource('user-intentions', UserIntentionController::class);
+    /** 资源库，电话记录 **/
+    $router->resource('talk-logs', TalkLogController::class);
+
 
 
     $router->resource('user-logs', UserLogController::class);
@@ -58,5 +54,9 @@ Route::group([
     $router->resource('codes', CodeController::class);
     $router->resource('company', CompanyController::class);
 
+
+
+    Route::any('add-intention', 'UserIntentionController@addIntentionUser');
+    Route::any('/call-back', 'TalkLogController@addUserCallRB');
 
 });

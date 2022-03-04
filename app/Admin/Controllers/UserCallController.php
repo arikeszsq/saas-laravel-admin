@@ -4,8 +4,10 @@ namespace App\Admin\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\UserExcel;
+use App\Models\UserIntention;
 use Encore\Admin\Layout\Content;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use zgldh\QiniuStorage\QiniuStorage;
 
 
@@ -15,9 +17,10 @@ class UserCallController extends Controller
 
     public function index(Content $content)
     {
-        $users = UserExcel::query()->where('call_no', 0)
+        $users = UserExcel::query()
+            ->where('call_no', 0)
             ->orderBy('id', 'desc')
-            ->limit(50)
+            ->limit(200)
             ->get();
 
         $data = [];
@@ -53,5 +56,6 @@ class UserCallController extends Controller
         }
         return '上传失败';
     }
+
 
 }

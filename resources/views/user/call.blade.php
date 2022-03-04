@@ -16,7 +16,7 @@
         <ul>
             @foreach ($users as $k => $val)
                 <li class="user-info"
-                        data-key_id={{ $val['key_id'] }}
+                    data-key_id={{ $val['key_id'] }}
                         data-id={{ $val['id'] }}
                         data-user_id={{ $val['user_id'] }}
                         data-user_name={{ $val['user_name'] }}
@@ -25,6 +25,7 @@
                         data-company_name={{ $val['company_name'] }}
                 >
                     <input type="hidden" id="user-mobile-{{ $val['key_id'] }}" value="{{ $val['mobile'] }}">
+                    <input type="hidden" id="user-id-{{ $val['id'] }}" value="{{ $val['id'] }}">
                     <span> {{ $val['company_name']}}</span>
                     <span> {{ $val['user_name']}}</span>
                     <span> {{ $val['mobile']}}</span>
@@ -34,6 +35,7 @@
     </div>
     <div class="container_zong left">
         <form class="container_sss">
+            <input type="hidden" id="excel-user_id">
             <div class="form-item">
                 <input type="text" class="txt form-company-name" placeholder="企业名称"/>
             </div>
@@ -52,13 +54,14 @@
             <div class="form-item clearfix">
                 <div class="left title">客户类别</div>
                 <div class="left">
-                    <label><input type="radio" name="sex" checked/><span>A</span></label><label>
-                        <input type="radio" name="sex"/><span>B</span></label><label><input
-                            type="radio" name="sex"/><span>C</span></label><label><input type="radio" name="sex"/><span>D</span></label>
+                    <input type="radio" name="type" value="A" checked/><span>A</span>
+                    <input type="radio" name="type" value="B"/><span>B</span>
+                    <input type="radio" name="type" value="C"/><span>C</span>
+                    <input type="radio" name="type" value="D"/><span>D</span>
                 </div>
             </div>
+            <div class="form-item"><input type="text" class="txt form-bak" placeholder="请填写备注"></div>
             <input type="hidden" id="stop_continue_call" value="0">
-            <div class="form-item"><textarea class="txt" placeholder="请填写备注"></textarea></div>
         </form>
         <div class="button-list">
             <button id="batch_call" class="btn btn-success">开始自动拨号</button>
@@ -66,10 +69,110 @@
             <button id="call" class="btn btn-info">拨号</button>
             <button id="hangup" class="btn btn-danger">挂断</button>
             <button id="set_intention_user" class="btn btn-primary">转为意向客户</button>
+            <div id="add_intention_notice_html" style="color: red;"></div>
         </div>
     </div>
 </div>
+
 <script>
+
+    // //连续拨号
+    // $('#batch_call').click(function () {
+    //     $('#stop_continue_call').val('');
+    //     CallContinue(1);
+    // });
+    //
+    // //停止连续拨号
+    // $('#batch_hangup').click(function () {
+    //     $('#stop_continue_call').val(1);
+    // });
+    //
+    //
+    // function CallContinue(keyId) {
+    //     setTimeout(function () {
+    //         DelayCall(keyId);
+    //     }, 3000)
+    // }
+    //
+    // function DelayCall(keyId) {
+    //     console.log('开始拨号：' + keyId);
+    //
+    //     var stop = $('#stop_continue_call').val();
+    //     console.log(stop);
+    //     if (stop) {
+    //         $('.notice_call').html('停止连续拨号');
+    //         console.log('停止连续拨号');
+    //         return false;
+    //     }
+    //     var id_name = '#user-mobile-' + keyId;
+    //     var number = $(id_name).val();
+    //     console.log(number);
+    //     if (number) {
+    //         var company_name = $(id_name).parent().data('company_name');
+    //         var user_name = $(id_name).parent().data('user_name');
+    //         var mobile = $(id_name).parent().data('mobile');
+    //         $('.form-company-name').val(company_name);
+    //         $('.form-user-name').val(user_name);
+    //         $('.form-mobile').val(mobile);
+    //         var id = 1;
+    //         var cdr = '[Succeeded|CallNumber:18115676166|CallTime:|TalkTime:00:00:08|Key:|ClientOnHook|CCID:89860319945125379324]';
+    //         ajaxSync(id, cdr); //通话之后，通知后端这个号码已经拨打过，是否拨通和通话时间，从cdr里面获取
+    //         CallContinue((keyId + 1));//自动拨打下一个
+    //     }
+    // }
+    //
+    //
+    // function ajaxSync(id, cdr) {
+    //     $.ajax({
+    //         type: "POST",
+    //         dataType: 'json',
+    //         url: "/admin/call-back",
+    //         data: {'id': id, 'cdr': cdr}
+    //     });
+    // }
+
+    $('#set_intention_user').click(function () {
+        addIntentionUser();
+    });
+
+    function addIntentionUser() {
+        var company_name = $('.form-company-name').val();
+        var user_name = $('.form-user-name').val();
+        var mobile = $('.form-mobile').val();
+        var wechat = $('.form-wechat').val();
+        var qq = $('.form-qq').val();
+        var type = $('input[name="type"]:checked').val();
+        var bak = $('.form-bak').val();
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: "/admin/add-intention",
+            data: {
+                'company_name': company_name,
+                'user_name': user_name,
+                'mobile': mobile,
+                'wechat': wechat,
+                'qq': qq,
+                'type': type,
+                'bak': bak
+            },
+            success: function (res) {
+                if (res.msg_code == 100000) {
+                    $('#add_intention_notice_html').html('成功添加意向客户');
+                    setTimeout(function () {
+                        $('#add_intention_notice_html').html('');
+                    }, 3000)
+                } else {
+                    $('#add_intention_notice_html').html('意向客户添加失败');
+                    setTimeout(function () {
+                        $('#add_intention_notice_html').html('');
+                    }, 3000)
+                }
+            }
+        });
+    }
+
+
     //初始化设备
     var callout_cb;
     init();
@@ -107,12 +210,13 @@
     });
 
     //连续拨号
-    $('#batch_hangup').click(function () {
+    $('#batch_call').click(function () {
+        $('#stop_continue_call').val('');
         CallContinue(1);
     });
 
     //停止连续拨号
-    $('#batch_call').click(function () {
+    $('#batch_hangup').click(function () {
         hangup();
         $('#stop_continue_call').val(1);
     });
@@ -123,51 +227,76 @@
             return false;
         }
         var stop = $('#stop_continue_call').val();
+        console.log(stop);
         if (stop) {
             $('.notice_call').html('停止连续拨号');
             console.log('停止连续拨号');
             return false;
         }
 
-        var id_name = '#user-mobile-'+keyId;
+        var id_name = '#user-mobile-' + keyId;
+
         var number = $(id_name).val();
         console.log(number);
+        if (number) {
+            var company_name =  $(id_name).parent().data('company_name');
+            var user_name =  $(id_name).parent().data('user_name');
+            var mobile =  $(id_name).parent().data('mobile');
+            $('.form-company-name').val(company_name);
+            $('.form-user-name').val(user_name);
+            $('.form-mobile').val(mobile);
 
-        callout_cb = 'CallOut_cb_' + new Date().getTime();
-        var action = {
-            action: 'CallOut',
-            number: number,
-            cb: callout_cb
-        };
-        ws.send(JSON.stringify(action));
-        //收到服务端消息
-        ws.onmessage = function (event) {
-            console.log(event.data);
-            var data = JSON.parse(event.data);
-            var message = data.message;
-            var name = data.name;
-            if (message == 'update' && name == 'Call') {
-                var param = data.param;
-                console.log(param);
-                if (param.status == 'CallStart') {
-                    uploadFile();
-                    $('.notice_call').html('拨号中：' + number);
-                } else if (param.status == 'TalkingEnd') {
-                    console.log("语音结束");
-                } else if (param.status == 'CallEnd') {
-                    // console.log("通话结束：");
-                    // $('.notice_call').html('');
-                    // var cdr = param.CDR;
-                    // var result = cdr.substring(1,10);
-                    // if(result=='Succeeded'){
-                    // }
+            callout_cb = 'CallOut_cb_' + new Date().getTime();
+            var action = {
+                action: 'CallOut',
+                number: number,
+                cb: callout_cb
+            };
+            ws.send(JSON.stringify(action));
+            //收到服务端消息
+            ws.onmessage = function (event) {
+                console.log(event.data);
+                var data = JSON.parse(event.data);
+                var message = data.message;
+                var name = data.name;
+                if (message == 'update' && name == 'Call') {
+                    var param = data.param;
+                    console.log(param);
+                    if (param.status == 'CallStart') {
+                        uploadFile();
+                        $('.notice_call').html('拨号中：' + number);
+                        //拨号之后把手机号码置空
+                        $(id_name).val('');
+                    } else if (param.status == 'TalkingEnd') {
+                        console.log("语音结束");
+                    } else if (param.status == 'CallEnd') {
+                        console.log("通话结束：");
+                        $('.notice_call').html('');
+                        var id_val_name = '#user-id-' + keyId;
+                        var id = $(id_val_name).val();
+                        var cdr = param.CDR;
+                        // var result = cdr.substring(1, 10);
+                        // if (result == 'Succeeded') {
+                        // }
+                        ajaxSync(id, cdr); //通话之后，通知后端这个号码已经拨打过，是否拨通和通话时间，从cdr里面获取
+                        CallContinue((keyId + 1));//自动拨打下一个
+                    }
                 }
+            };
+            //发生错误
+            ws.onerror = function () {
+                console.log("error");
             }
-        };
-        //发生错误
-        ws.onerror = function () {
-            console.log("error");
         }
+    }
+
+    function ajaxSync(id, cdr) {
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: "/admin/call-back",
+            data: {'id': id, 'cdr': cdr}
+        });
     }
 
 
@@ -210,11 +339,12 @@
                     console.log("语音结束");
                 } else if (param.status == 'CallEnd') {
                     console.log("通话结束/或者挂断事件");
-                    // $('.notice_call').html('');
-                    // var cdr = param.CDR;
-                    // var result = cdr.substring(1,10);
-                    // if(result=='Succeeded'){
-                    // }
+                    $('.notice_call').html('');
+                    var cdr = param.CDR;
+                    var id_val_name = '#user-id-' + keyId;
+                    var id = $(id_val_name).val();
+                    //通话之后，通知后端这个号码已经拨打过，是否拨通和通话时间，从cdr里面获取
+                    ajaxSync(id, cdr);
                 }
             }
         };

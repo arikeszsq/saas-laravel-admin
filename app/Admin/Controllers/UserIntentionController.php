@@ -3,13 +3,16 @@
 namespace App\Admin\Controllers;
 
 use App\Models\UserIntention;
+use App\Traits\ResponseTrait;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Illuminate\Http\Request;
 
 class UserIntentionController extends AdminController
 {
+    use ResponseTrait;
     /**
      * Title for current resource.
      *
@@ -26,21 +29,33 @@ class UserIntentionController extends AdminController
     {
         $grid = new Grid(new UserIntention());
 
-        $grid->column('id', __('Id'));
-        $grid->column('web_id', __('Web id'));
-        $grid->column('user_id', __('User id'));
-        $grid->column('master_Id', __('Master Id'));
-        $grid->column('company_name', __('Company name'));
-        $grid->column('user_name', __('User name'));
-        $grid->column('mobile', __('Mobile'));
-        $grid->column('wechat', __('Wechat'));
-        $grid->column('qq', __('Qq'));
-        $grid->column('type', __('Type'));
-        $grid->column('status', __('Status'));
-        $grid->column('bak', __('Bak'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
+        $grid->filter(function ($filter) {
+            // 去掉默认的id过滤器
+            $filter->disableIdFilter();
+            $filter->column(1 / 2, function ($filter) {
+                $filter->like('user_name', '姓名');
+                $filter->like('company_name', '公司名称');
+            });
+            $filter->column(1 / 2, function ($filter) {
+                $filter->like('mobile', '手机号');
+            });
+        });
 
+        if (!self::isSuperAdmin()) {
+            $grid->model()->where('web_id', static::webId());
+            if (!self::isWebAdmin()) {
+                $grid->model()->where('user_id', static::userId());
+            }
+        }
+        $grid->column('id', __('Id'));
+
+        $grid->column('company_name', __('公司名称'));
+        $grid->column('user_name', __('姓名'));
+        $grid->column('mobile', __('手机号'));
+        $grid->column('wechat', __('微信'));
+        $grid->column('qq', __('Qq'));
+        $grid->column('type', __('类型'));
+        $grid->column('created_at', __('添加时间'));
         return $grid;
     }
 
@@ -94,5 +109,32 @@ class UserIntentionController extends AdminController
         $form->textarea('bak', __('Bak'));
 
         return $form;
+    }
+
+
+    public function addIntentionUser(Request $request)
+    {
+        $inputs = $request->all();
+        $user_id = static::userId();
+        $web_id = static::webId();
+        $data = [
+            'web_id' => $web_id,
+            'user_id' => $user_id,
+            'master_Id' => $user_id,
+            'company_name' => isset($inputs['company_name']) && $inputs['company_name'] ? $inputs['company_name'] : '',
+            'user_name' => isset($inputs['user_name']) && $inputs['user_name'] ? $inputs['user_name'] : '',
+            'mobile' => isset($inputs['mobile']) && $inputs['mobile'] ? $inputs['mobile'] : '',
+            'wechat' => isset($inputs['wechat']) && $inputs['wechat'] ? $inputs['wechat'] : '',
+            'qq' => isset($inputs['qq']) && $inputs['qq'] ? $inputs['qq'] : '',
+            'type' => isset($inputs['type']) && $inputs['type'] ? $inputs['type'] : '',
+            'bak' => isset($inputs['bak']) && $inputs['bak'] ? $inputs['bak'] : '',
+            'created_at' => date('Y-m-d H:i:s', time()),
+        ];
+        try {
+            $ret = UserIntention::query()->insert($data);
+            return self::success($ret);
+        } catch (\Exception $e) {
+            return self::error($e->getCode(), $e->getMessage());
+        }
     }
 }
