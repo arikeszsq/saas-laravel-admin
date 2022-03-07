@@ -7,22 +7,134 @@ use Illuminate\Support\Facades\DB;
 
 class CheckRow
 {
-    protected $id;
+    protected $row;
     protected $mobile;
 
-    public function __construct($id)
+    public function __construct($row)
     {
-        $this->id = $id;
-        $user = DB::table('jf_user')->where('id', $id)->first();
-        $this->mobile = $user->mobile;
+        $this->row = $row;
+        $this->mobile = $row['mobile'];
+//        $user = DB::table('jf_user')->where('id', $id)->first();
+//        $this->mobile = $user->mobile;
     }
 
     protected function script()
     {
         return <<<SCRIPT
+    //初始化设备
+    var callout_cb;
+    init();
+
+    function init() {
+        getWebsocket();
+    }
+
 $('.call_mobile').on('click', function () {
-    alert($(this).data('id'));
+     var mobile = $(this).data('id');
+     if (!mobile) {
+            alert('请先选择需要拨打的用户号码');
+        } else {
+            Call(mobile);
+        }
 });
+
+$('.hang_mobile').on('click', function () {
+     hangup();
+});
+
+
+function Call(number) {
+        if (!ws) {
+            alert("控件未初始化");
+            return false;
+        }
+        callout_cb = 'CallOut_cb_' + new Date().getTime();
+        var action = {
+            action: 'CallOut',
+            number: number,
+            cb: callout_cb
+        };
+        ws.send(JSON.stringify(action));
+        //收到服务端消息
+        ws.onmessage = function (event) {
+            console.log(event.data);
+            var data = JSON.parse(event.data);
+            var message = data.message;
+            var name = data.name;
+            if (message == 'update' && name == 'Call') {
+                var param = data.param;
+                console.log(param);
+                if (param.status == 'CallStart') {
+                    uploadFile();
+                    $('.notice_call').html('拨号中：' + number);
+                } else if (param.status == 'TalkingEnd') {
+                    console.log("语音结束");
+                } else if (param.status == 'CallEnd') {
+                    console.log("通话结束/或者挂断事件");
+                    $('.notice_call').html('');
+                    var cdr = param.CDR;
+                    var id_val_name = '#user-id-' + keyId;
+                    var id = $(id_val_name).val();
+                    //通话之后，通知后端这个号码已经拨打过，是否拨通和通话时间，从cdr里面获取
+                    ajaxSync(id, cdr);
+                }
+            }
+        };
+        //发生错误
+        ws.onerror = function () {
+            console.log("error");
+        }
+    }
+
+    function getWebsocket() {
+        ws = new WebSocket('ws://127.0.0.1:8090/APP_2AD85C71-BEF8-463C-9B4B-B672F603542A_fast');
+        ws.onerror = function (event) {
+            alert('初始化设备失败：' + event.data);
+        };
+        ws.onclose = function (event) {
+        };
+        ws.onopen = function () {
+            console.log('初始化设备成功');
+        }
+    }
+
+    function hangup() {
+        ws.send(JSON.stringify({action: 'Hangup', cb: new Date().getTime()}));
+        ws.onmessage = function (event) {
+            console.log("message", event.data);
+        };
+        ws.onerror = function () {
+            console.log("error");
+        }
+    }
+
+     function uploadFile() {
+        ws.send(
+            JSON.stringify({
+                action: 'Settings',
+                settings: {
+                    upload: {
+                        api: 'http://tk.lianshuiweb.com/api/upload-file',//http://tk.lianshuiweb.com/api/upload-file
+                        flag: 'token-1234-123',
+                        file: '1',
+                        qiniu: {
+                            AccessKey: 'Bz7rahQAQVdmp-6wYw50zNKO2JPh52fIUrNCtwjq',
+                            SecretKey: 'Pj_qaxfs9earPgwiiE_ys3OaFvB3xKunwgcYrieD',
+                            Zone: 'Zone_z0',//华东
+                            Bucket: '123456adsf'
+                        }
+                    }
+                },
+                cb: new Date().getTime()
+            })
+        );
+        ws.onmessage = function (event) {
+            console.log("message111", event.data);
+        };
+        ws.onerror = function () {
+            console.log("error111");
+        }
+    }
 SCRIPT;
     }
 
@@ -32,7 +144,7 @@ SCRIPT;
         Admin::js('/static/js/app.js');
 
         return "<a class='btn btn-xs btn-success call_mobile' data-id='{$this->mobile}'><i class=\"fa fa-phone\" aria-hidden=\"true\"></i>拨号</a>
-<a class='btn btn-xs btn-danger' data-id='{$this->mobile}'>挂机</a>";
+<a class='btn btn-xs btn-danger hang_mobile' data-id='{$this->mobile}'>挂机</a>";
 
     }
 

@@ -390,7 +390,7 @@
         ws.onclose = function (event) {
         };
         ws.onopen = function () {
-            alert('初始化设备成功');
+            console.log('初始化设备成功');
         }
     }
 

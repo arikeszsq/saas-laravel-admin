@@ -2,9 +2,11 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\Extensions\CheckRow;
 use App\Models\UserIntention;
 use App\Traits\ResponseTrait;
 use Encore\Admin\Controllers\AdminController;
+use Encore\Admin\Facades\Admin;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
@@ -18,7 +20,7 @@ class UserIntentionController extends AdminController
      *
      * @var string
      */
-    protected $title = 'UserIntention';
+    protected $title = '意向客户';
 
     /**
      * Make a grid builder.
@@ -47,15 +49,22 @@ class UserIntentionController extends AdminController
                 $grid->model()->where('user_id', static::userId());
             }
         }
-        $grid->column('id', __('Id'));
+
+        $grid->model()->orderBy('id', 'desc');
+        $grid->column('id', __('Id'))->sortable();
 
         $grid->column('company_name', __('公司名称'));
         $grid->column('user_name', __('姓名'));
         $grid->column('mobile', __('手机号'));
-        $grid->column('wechat', __('微信'));
-        $grid->column('qq', __('Qq'));
         $grid->column('type', __('类型'));
+        $grid->column('bak', __('备注'))->editable();
         $grid->column('created_at', __('添加时间'));
+
+        $grid->actions(function ($actions) {
+//            var_dump($actions->row);exit;
+            $actions->disableDelete();// 去掉删除
+            $actions->append(new CheckRow($actions->row));
+        });
         return $grid;
     }
 
@@ -69,20 +78,15 @@ class UserIntentionController extends AdminController
     {
         $show = new Show(UserIntention::findOrFail($id));
 
-        $show->field('id', __('Id'));
-        $show->field('web_id', __('Web id'));
-        $show->field('user_id', __('User id'));
-        $show->field('master_Id', __('Master Id'));
-        $show->field('company_name', __('Company name'));
-        $show->field('user_name', __('User name'));
-        $show->field('mobile', __('Mobile'));
-        $show->field('wechat', __('Wechat'));
-        $show->field('qq', __('Qq'));
-        $show->field('type', __('Type'));
-        $show->field('status', __('Status'));
-        $show->field('bak', __('Bak'));
-        $show->field('created_at', __('Created at'));
-        $show->field('updated_at', __('Updated at'));
+        $show->field('company_name', __('公司名称'));
+        $show->field('user_name', __('姓名'));
+        $show->field('mobile', __('手机号'));
+        $show->field('wechat', __('微信'));
+        $show->field('qq', __('QQ'));
+        $show->field('type', __('类型'));
+        $show->field('bak', __('备注'));
+        $show->field('created_at', __('添加时间'));
+        $show->field('updated_at', __('更新时间'));
 
         return $show;
     }
@@ -96,18 +100,26 @@ class UserIntentionController extends AdminController
     {
         $form = new Form(new UserIntention());
 
-        $form->number('web_id', __('Web id'));
-        $form->number('user_id', __('User id'));
-        $form->number('master_Id', __('Master Id'));
-        $form->text('company_name', __('Company name'));
-        $form->text('user_name', __('User name'));
-        $form->mobile('mobile', __('Mobile'));
-        $form->text('wechat', __('Wechat'));
-        $form->text('qq', __('Qq'));
-        $form->number('type', __('Type'));
-        $form->number('status', __('Status'));
-        $form->textarea('bak', __('Bak'));
+        $form->text('company_name', __('公司名称'));
+        $form->text('user_name', __('姓名'));
+        $form->mobile('mobile', __('手机号'));
+        $form->text('wechat', __('微信'));
+        $form->text('qq', __('QQ'));
+        $form->select('type', __('类型'))->options([
+            'A' => 'A',
+            'B' => 'B',
+            'C' => 'C',
+            'D' => 'D',
+        ]);
+        $form->textarea('bak', __('备注'));
 
+        $form->saving(function (Form $form) {
+            if ($form->isCreating()) {
+                $form->model()->web_id = Admin::user()->web_id;
+                $form->model()->user_id = Admin::user()->id;
+                $form->model()->master_id = Admin::user()->id;
+            }
+        });
         return $form;
     }
 

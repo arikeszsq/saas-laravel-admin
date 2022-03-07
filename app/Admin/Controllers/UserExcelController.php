@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Admin\Actions\Post\BatchAssign;
 use App\Admin\Actions\Post\ImportPost;
+use App\Admin\Extensions\CheckRow;
 use App\Models\UserExcel;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
@@ -57,6 +58,11 @@ class UserExcelController extends AdminController
         $grid->column('mobile', __('手机号'));
         $grid->column('created_at', __('添加时间'));
 
+        $grid->actions(function ($actions) {
+//            var_dump($actions->row);exit;
+            $actions->disableDelete();// 去掉删除
+            $actions->append(new CheckRow($actions->row));
+        });
 
         $grid->batchActions(function ($batch) {
             $batch->add(new BatchAssign());
