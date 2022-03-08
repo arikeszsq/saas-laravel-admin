@@ -24,6 +24,8 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         // \Illuminate\Session\Middleware\StartSession::class,
+        //跨域
+        \App\Http\Middleware\Cross::class
     ];
 
     /**
