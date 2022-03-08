@@ -71,6 +71,8 @@
             <button id="set_intention_user" class="btn btn-primary">转为意向客户</button>
             <div id="add_intention_notice_html" style="color: red;"></div>
         </div>
+        
+        <div class="notice_call">话机状态</div>
     </div>
 </div>
 
@@ -192,6 +194,9 @@
         $('.form-company-name').val(company_name);
         $('.form-user-name').val(user_name);
         $('.form-mobile').val(mobile);
+
+        var excel_user_id = $(this).data('id');
+        $('#excel-user_id').val(excel_user_id);
     });
 
     //单独拨号
@@ -237,11 +242,11 @@
         var id_name = '#user-mobile-' + keyId;
 
         var number = $(id_name).val();
-        console.log(number);
+        console.log(id_name,number);
         if (number) {
-            var company_name =  $(id_name).parent().data('company_name');
-            var user_name =  $(id_name).parent().data('user_name');
-            var mobile =  $(id_name).parent().data('mobile');
+            var company_name = $(id_name).parent().data('company_name');
+            var user_name = $(id_name).parent().data('user_name');
+            var mobile = $(id_name).parent().data('mobile');
             $('.form-company-name').val(company_name);
             $('.form-user-name').val(user_name);
             $('.form-mobile').val(mobile);
@@ -263,10 +268,10 @@
                     var param = data.param;
                     console.log(param);
                     if (param.status == 'CallStart') {
-                        uploadFile();
                         $('.notice_call').html('拨号中：' + number);
                         //拨号之后把手机号码置空
                         $(id_name).val('');
+                        uploadFile();
                     } else if (param.status == 'TalkingEnd') {
                         console.log("语音结束");
                     } else if (param.status == 'CallEnd') {
@@ -279,7 +284,9 @@
                         // if (result == 'Succeeded') {
                         // }
                         ajaxSync(id, cdr); //通话之后，通知后端这个号码已经拨打过，是否拨通和通话时间，从cdr里面获取
-                        CallContinue((keyId + 1));//自动拨打下一个
+                        setTimeout(function () {
+                            CallContinue((keyId + 1));//800毫秒后自动拨打下一个
+                        }, 800)
                     }
                 }
             };
@@ -341,8 +348,7 @@
                     console.log("通话结束/或者挂断事件");
                     $('.notice_call').html('');
                     var cdr = param.CDR;
-                    var id_val_name = '#user-id-' + keyId;
-                    var id = $(id_val_name).val();
+                    var id = $('#excel-user_id').val();
                     //通话之后，通知后端这个号码已经拨打过，是否拨通和通话时间，从cdr里面获取
                     ajaxSync(id, cdr);
                 }
@@ -374,12 +380,6 @@
                 cb: new Date().getTime()
             })
         );
-        ws.onmessage = function (event) {
-            console.log("message111", event.data);
-        };
-        ws.onerror = function () {
-            console.log("error111");
-        }
     }
 
     function getWebsocket() {
