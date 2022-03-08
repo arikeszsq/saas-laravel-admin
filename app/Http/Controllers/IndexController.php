@@ -145,29 +145,36 @@ class IndexController extends Controller
 
     public function uploadFile(Request $request)
     {
+        header('Access-Control-Allow-Origin', '*');
+        header('Access-Control-Allow-Headers', 'Origin, Content-Type, Cookie, Accept');
+        header('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, OPTIONS');
+        header('Access-Control-Allow-Credentials', 'false');
+
+        Log::info(1111111111111111111111111111);
+        $content = file_get_contents('php://input');
+
+        Log::info($content);
+
         Log::info(date('Y-m-d H:i:s', time()));
 
-        Log::info($_FILES);
-
-        Log::info($_POST);
-
-        var_dump($_FILES);
-        var_dump($_POST);
-
-        $file = $request->file('file');
-        //获取文件的扩展名
-        $kuoname = $file->getClientOriginalExtension();
-        //获取文件的绝对路径，但是获取到的在本地不能打开
-        $path = $file->getRealPath();
-        //要保存的文件名 时间+扩展名
-        $filename = date('Y-m-d-H-i-s') . '_' . uniqid() . '.' . $kuoname;
-        $disk = QiniuStorage::disk('qiniu');
-        $bool = $disk->put($filename, file_get_contents($path));
-        if ($bool) {
-            $path = $disk->downloadUrl($filename);
-            return '上传成功，url:' . $path;
-        }
-        return '上传失败';
+//
+//        var_dump($_FILES);
+//        var_dump($_POST);
+//
+//        $file = $request->file('file');
+//        //获取文件的扩展名
+//        $kuoname = $file->getClientOriginalExtension();
+//        //获取文件的绝对路径，但是获取到的在本地不能打开
+//        $path = $file->getRealPath();
+//        //要保存的文件名 时间+扩展名
+//        $filename = date('Y-m-d-H-i-s') . '_' . uniqid() . '.' . $kuoname;
+//        $disk = QiniuStorage::disk('qiniu');
+//        $bool = $disk->put($filename, file_get_contents($path));
+//        if ($bool) {
+//            $path = $disk->downloadUrl($filename);
+//            return '上传成功，url:' . $path;
+//        }
+//        return '上传失败';
     }
 
 

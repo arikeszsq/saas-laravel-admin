@@ -34,6 +34,7 @@ $('.call_mobile').on('click', function () {
      if (!mobile) {
             alert('请先选择需要拨打的用户号码');
         } else {
+            console.log('开始拨号：'+mobile);
             Call(mobile);
         }
 });
@@ -41,7 +42,6 @@ $('.call_mobile').on('click', function () {
 $('.hang_mobile').on('click', function () {
      hangup();
 });
-
 
 function Call(number) {
         if (!ws) {
@@ -55,7 +55,6 @@ function Call(number) {
             cb: callout_cb
         };
         ws.send(JSON.stringify(action));
-        //收到服务端消息
         ws.onmessage = function (event) {
             console.log(event.data);
             var data = JSON.parse(event.data);
@@ -71,12 +70,6 @@ function Call(number) {
                     console.log("语音结束");
                 } else if (param.status == 'CallEnd') {
                     console.log("通话结束/或者挂断事件");
-                    $('.notice_call').html('');
-                    var cdr = param.CDR;
-                    var id_val_name = '#user-id-' + keyId;
-                    var id = $(id_val_name).val();
-                    //通话之后，通知后端这个号码已经拨打过，是否拨通和通话时间，从cdr里面获取
-                    ajaxSync(id, cdr);
                 }
             }
         };
@@ -114,26 +107,14 @@ function Call(number) {
                 action: 'Settings',
                 settings: {
                     upload: {
-                        api: 'http://tk.lianshuiweb.com/api/upload-file',//http://tk.lianshuiweb.com/api/upload-file
+                        api: 'http://tk.lianshuiweb.com/api/upload-file',
                         flag: 'token-1234-123',
-                        file: '1',
-                        qiniu: {
-                            AccessKey: 'Bz7rahQAQVdmp-6wYw50zNKO2JPh52fIUrNCtwjq',
-                            SecretKey: 'Pj_qaxfs9earPgwiiE_ys3OaFvB3xKunwgcYrieD',
-                            Zone: 'Zone_z0',//华东
-                            Bucket: '123456adsf'
-                        }
+                        file: '1'
                     }
                 },
                 cb: new Date().getTime()
             })
         );
-        ws.onmessage = function (event) {
-            console.log("message111", event.data);
-        };
-        ws.onerror = function () {
-            console.log("error111");
-        }
     }
 SCRIPT;
     }

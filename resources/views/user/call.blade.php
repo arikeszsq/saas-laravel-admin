@@ -71,7 +71,7 @@
             <button id="set_intention_user" class="btn btn-primary">转为意向客户</button>
             <div id="add_intention_notice_html" style="color: red;"></div>
         </div>
-        
+
         <div class="notice_call">话机状态</div>
     </div>
 </div>
