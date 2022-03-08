@@ -3,7 +3,6 @@
 namespace App\Admin\Extensions;
 
 use Encore\Admin\Admin;
-use Illuminate\Support\Facades\DB;
 
 class CheckRow
 {
@@ -14,8 +13,6 @@ class CheckRow
     {
         $this->row = $row;
         $this->mobile = $row['mobile'];
-//        $user = DB::table('jf_user')->where('id', $id)->first();
-//        $this->mobile = $user->mobile;
     }
 
     protected function script()
@@ -56,22 +53,7 @@ function Call(number) {
         };
         ws.send(JSON.stringify(action));
         ws.onmessage = function (event) {
-            console.log(event.data);
-            var data = JSON.parse(event.data);
-            var message = data.message;
-            var name = data.name;
-            if (message == 'update' && name == 'Call') {
-                var param = data.param;
-                console.log(param);
-                if (param.status == 'CallStart') {
-                    uploadFile();
-                    $('.notice_call').html('拨号中：' + number);
-                } else if (param.status == 'TalkingEnd') {
-                    console.log("语音结束");
-                } else if (param.status == 'CallEnd') {
-                    console.log("通话结束/或者挂断事件");
-                }
-            }
+            console.log('Check_row_on_Message',event.data);
         };
         //发生错误
         ws.onerror = function () {
@@ -122,7 +104,7 @@ SCRIPT;
     protected function render()
     {
         Admin::script($this->script());
-        Admin::js('/static/js/app.js');
+//        Admin::js('/static/js/app.js');
 
         return "<a class='btn btn-xs btn-success call_mobile' data-id='{$this->mobile}'><i class=\"fa fa-phone\" aria-hidden=\"true\"></i>拨号</a>
 <a class='btn btn-xs btn-danger hang_mobile' data-id='{$this->mobile}'>挂机</a>";

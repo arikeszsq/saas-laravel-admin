@@ -145,10 +145,14 @@ class IndexController extends Controller
 
     public function uploadFile(Request $request)
     {
-        header('Access-Control-Allow-Origin', '*');
-        header('Access-Control-Allow-Headers', 'Origin, Content-Type, Cookie, Accept');
-        header('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, OPTIONS');
-        header('Access-Control-Allow-Credentials', 'false');
+        var_dump($_FILES);
+        var_dump($_FILES['audio']);
+        print_r($_FILES);
+        print_r($_FILES['audio']);
+
+        Log::info($_FILES);
+
+        Log::info($_FILES['myFile']);
 
         Log::info(1111111111111111111111111111);
         $content = file_get_contents('php://input');
@@ -156,6 +160,10 @@ class IndexController extends Controller
         Log::info($content);
 
         Log::info(date('Y-m-d H:i:s', time()));
+
+
+
+
 
 //
 //        var_dump($_FILES);
