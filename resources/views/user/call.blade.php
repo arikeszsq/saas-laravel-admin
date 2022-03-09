@@ -231,6 +231,7 @@
             alert("控件未初始化");
             return false;
         }
+        $('.notice_call').html('开始连续拨号');
         var stop = $('#stop_continue_call').val();
         console.log(stop);
         if (stop) {
@@ -242,7 +243,7 @@
         var id_name = '#user-mobile-' + keyId;
 
         var number = $(id_name).val();
-        console.log(id_name,number);
+        console.log(id_name, number);
         if (number) {
             var company_name = $(id_name).parent().data('company_name');
             var user_name = $(id_name).parent().data('user_name');
@@ -323,6 +324,7 @@
             alert("控件未初始化");
             return false;
         }
+        $('.notice_call').html('开始拨号');
         callout_cb = 'CallOut_cb_' + new Date().getTime();
         var action = {
             action: 'CallOut',
