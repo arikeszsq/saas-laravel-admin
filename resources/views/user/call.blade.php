@@ -72,9 +72,24 @@
             <div id="add_intention_notice_html" style="color: red;"></div>
         </div>
 
-        <div class="notice_call">话机状态</div>
+        <div class="notice_call">待机...</div>
     </div>
 </div>
+
+<style>
+    .notice_call {
+        margin-top: 20px;
+        padding-left: 20px;
+        padding-right: 20px;
+        border-radius: 20px;
+        width: 200px;
+        height: 60px;
+        line-height: 60px;
+        background-color: lightblue;
+        font-size: 18px;
+        color: whitesmoke;
+    }
+</style>
 
 <script>
 
@@ -277,7 +292,7 @@
                         //拨号之后把手机号码置空
                         $(id_name).val('');
                         record = param.time;
-                        ajaxRecordSync(id, record,'jf_user_excel');
+                        ajaxRecordSync(id, record, 'jf_user_excel');
                         uploadFile();
                     } else if (param.status == 'TalkingEnd') {
                         console.log("语音结束");
@@ -359,7 +374,7 @@
                 console.log(param);
                 if (param.status == 'CallStart') {
                     record = param.time;
-                    ajaxRecordSync(id, record,'jf_user_excel');
+                    ajaxRecordSync(id, record, 'jf_user_excel');
                     uploadFile();
                     $('.notice_call').html('拨号中：' + number);
                 } else if (param.status == 'TalkingEnd') {
