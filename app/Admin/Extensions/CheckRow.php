@@ -20,7 +20,7 @@ class CheckRow
     protected function script()
     {
         return <<<SCRIPT
-var callout_cb;
+        var callout_cb;
         init();
 
         function init() {
@@ -39,7 +39,7 @@ var callout_cb;
                 return false;
             }
 
-            console.log('开始拨号：' + mobile);
+            console.log('开始拨号：' + number);
             callout_cb = 'CallOut_cb_' + new Date().getTime();
             ws.send(JSON.stringify({
                 action: 'CallOut',
