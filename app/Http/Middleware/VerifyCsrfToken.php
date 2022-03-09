@@ -12,6 +12,6 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        'wechat','admin/add-intention','admin/call-back'
+        'wechat','admin/add-intention','admin/call-back','admin/add-call-record'
     ];
 }
