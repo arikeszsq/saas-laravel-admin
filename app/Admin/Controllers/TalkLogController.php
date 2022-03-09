@@ -87,7 +87,6 @@ class TalkLogController extends AdminController
         $show->field('created_at', __('添加时间'));
         $show->field('updated_at', __('修改时间'));
         $show->field('record_url', __('录音文件地址'));
-
         return $show;
     }
 
@@ -106,16 +105,13 @@ class TalkLogController extends AdminController
         return $form;
     }
 
-
     public function addUserCallRB(Request $request)
     {
         $inputs = $request->all();
         $id = $inputs['id'];
         $cdr = $inputs['cdr'];
-
         //        $cdr = "[Succeeded|CallNumber:18115676166|CallTime:|TalkTime:00:00:08|Key:|ClientOnHook|CCID:89860319945125379324]";
         $cdr_array = explode('|', $this->cut('[', ']', $cdr));
-        $result = $cdr_array[0];
         $mobile = 0;
         $talk_time = 0;
         foreach ($cdr_array as $v) {
@@ -128,48 +124,33 @@ class TalkLogController extends AdminController
                 $talk_time = $time_array[0] * 3600 + $time_array[1] * 60 + $time_array[2];
             }
         }
-
         $table_name = isset($inputs['table_name']) && $inputs['table_name'] ? $inputs['table_name'] : '';
-        if($table_name){
-            $user = DB::table($table_name)->where('id',$id)->first();
-            $user_id = static::userId();
-            $web_id = static::webId();
-
+        if ($table_name) {
             if ($mobile) {
                 $data = [
-                    'web_id' => $web_id,
-                    'user_id' => $user_id,
-                    'excel_user_id' => $id,
-                    'excel_user_name' => $user->user_name,
                     'mobile' => $mobile,
                     'talk_time' => $talk_time,
-                    'created_at' => date('Y-m-d H:i:s', time()),
-                    'table_name'=>$table_name,
-//            'record_url' => '录音地址'
                 ];
-                DB::table('jf_talk_log')->insert($data);
+                DB::table('jf_talk_log')->where('excel_user_id', $id)
+                    ->where('table_name', $table_name)
+                    ->orderBy('id', 'desc')
+                    ->limit(1)
+                    ->update($data);
             }
-
-        }else{
+        } else {
             $user_excel = UserExcel::query()->find($id);
             $user_excel->call_no += 1;
             $user_excel->save();
-            $user_id = static::userId();
-            $web_id = static::webId();
-
             if ($mobile) {
                 $data = [
-                    'web_id' => $web_id,
-                    'user_id' => $user_id,
-                    'excel_user_id' => $id,
-                    'excel_user_name' => $user_excel->user_name,
                     'mobile' => $mobile,
                     'talk_time' => $talk_time,
-                    'created_at' => date('Y-m-d H:i:s', time()),
-                    'table_name'=>'jf_user_excel',
-//            'record_url' => '录音地址'
                 ];
-                DB::table('jf_talk_log')->insert($data);
+                DB::table('jf_talk_log')->where('excel_user_id', $id)
+                    ->where('table_name', 'jf_user_excel')
+                    ->orderBy('id', 'desc')
+                    ->limit(1)
+                    ->update($data);
             }
         }
     }
@@ -188,6 +169,42 @@ class TalkLogController extends AdminController
             return $array[1];
         } else {
             return 0;
+        }
+    }
+
+    public function addUserCallRecord(Request $request)
+    {
+        $inputs = $request->all();
+        $id = $inputs['id'];
+        $record = $inputs['record'];
+        $user_id = static::userId();
+        $web_id = static::webId();
+        $table_name = isset($inputs['table_name']) && $inputs['table_name'] ? $inputs['table_name'] : '';
+        if ($table_name) {
+            $user = DB::table($table_name)->where('id', $id)->first();
+            $data = [
+                'web_id' => $web_id,
+                'user_id' => $user_id,
+                'excel_user_id' => $id,
+                'excel_user_name' => $user->user_name,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'table_name' => $table_name,
+                'record_url' => env('QINIU_YUMING') . $record
+            ];
+            DB::table('jf_talk_log')->insert($data);
+
+        } else {
+            $user_excel = UserExcel::query()->find($id);
+            $data = [
+                'web_id' => $web_id,
+                'user_id' => $user_id,
+                'excel_user_id' => $id,
+                'excel_user_name' => $user_excel->user_name,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'table_name' => 'jf_user_excel',
+                'record_url' => env('QINIU_YUMING') . $record
+            ];
+            DB::table('jf_talk_log')->insert($data);
         }
     }
 }

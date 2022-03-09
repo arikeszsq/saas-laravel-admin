@@ -56,10 +56,13 @@ class CheckRow
                 var data = JSON.parse(event.data);
                 var message = data.message;
                 var name = data.name;
+                var record='';
                 if (message == 'update' && name == 'Call') {
                     var param = data.param;
                     console.log(param);
                     if (param.status == 'CallStart') {
+                        record=param.time;
+                        ajaxRecordSync(id, record, table_name);
                         uploadFile();
                     } else if (param.status == 'CallEnd') {
                         console.log("通话结束/或者挂断事件");
@@ -72,6 +75,16 @@ class CheckRow
                 console.log("error");
             }
         });
+
+
+        function ajaxRecordSync(id, record,table_name) {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: "/admin/add-call-record",
+                data: { 'id': id, 'record': record ,'table_name': table_name}
+            });
+        }
 
         function ajaxSync(id, cdr,table_name) {
             $.ajax({

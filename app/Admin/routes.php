@@ -58,5 +58,6 @@ Route::group([
 
     Route::any('add-intention', 'UserIntentionController@addIntentionUser');
     Route::any('/call-back', 'TalkLogController@addUserCallRB');
+    Route::any('/add-call-record', 'TalkLogController@addUserCallRecord');
 
 });
