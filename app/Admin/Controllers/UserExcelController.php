@@ -61,7 +61,7 @@ class UserExcelController extends AdminController
         $grid->actions(function ($actions) {
 //            var_dump($actions->row);exit;
             $actions->disableDelete();// 去掉删除
-            $actions->append(new CheckRow($actions->row));
+            $actions->append(new CheckRow($actions->row, 'jf_user_excel'));
         });
 
         $grid->batchActions(function ($batch) {

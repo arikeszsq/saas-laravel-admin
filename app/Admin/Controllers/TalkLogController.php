@@ -112,12 +112,8 @@ class TalkLogController extends AdminController
         $inputs = $request->all();
         $id = $inputs['id'];
         $cdr = $inputs['cdr'];
-        $user_excel = UserExcel::query()->find($id);
-        $user_excel->call_no += 1;
-        $user_excel->save();
-        $user_id = static::userId();
-        $web_id = static::webId();
-//        $cdr = "[Succeeded|CallNumber:18115676166|CallTime:|TalkTime:00:00:08|Key:|ClientOnHook|CCID:89860319945125379324]";
+
+        //        $cdr = "[Succeeded|CallNumber:18115676166|CallTime:|TalkTime:00:00:08|Key:|ClientOnHook|CCID:89860319945125379324]";
         $cdr_array = explode('|', $this->cut('[', ']', $cdr));
         $result = $cdr_array[0];
         $mobile = 0;
@@ -132,18 +128,49 @@ class TalkLogController extends AdminController
                 $talk_time = $time_array[0] * 3600 + $time_array[1] * 60 + $time_array[2];
             }
         }
-        if ($mobile) {
-            $data = [
-                'web_id' => $web_id,
-                'user_id' => $user_id,
-                'excel_user_id' => $id,
-                'excel_user_name' => $user_excel->user_name,
-                'mobile' => $mobile,
-                'talk_time' => $talk_time,
-                'created_at' => date('Y-m-d H:i:s', time()),
+
+        $table_name = isset($inputs['table_name']) && $inputs['table_name'] ? $inputs['table_name'] : '';
+        if($table_name){
+            $user = DB::table($table_name)->where('id',$id)->first();
+            $user_id = static::userId();
+            $web_id = static::webId();
+
+            if ($mobile) {
+                $data = [
+                    'web_id' => $web_id,
+                    'user_id' => $user_id,
+                    'excel_user_id' => $id,
+                    'excel_user_name' => $user->user_name,
+                    'mobile' => $mobile,
+                    'talk_time' => $talk_time,
+                    'created_at' => date('Y-m-d H:i:s', time()),
+                    'table_name'=>$table_name,
 //            'record_url' => '录音地址'
-            ];
-            DB::table('jf_talk_log')->insert($data);
+                ];
+                DB::table('jf_talk_log')->insert($data);
+            }
+
+        }else{
+            $user_excel = UserExcel::query()->find($id);
+            $user_excel->call_no += 1;
+            $user_excel->save();
+            $user_id = static::userId();
+            $web_id = static::webId();
+
+            if ($mobile) {
+                $data = [
+                    'web_id' => $web_id,
+                    'user_id' => $user_id,
+                    'excel_user_id' => $id,
+                    'excel_user_name' => $user_excel->user_name,
+                    'mobile' => $mobile,
+                    'talk_time' => $talk_time,
+                    'created_at' => date('Y-m-d H:i:s', time()),
+                    'table_name'=>'jf_user_excel',
+//            'record_url' => '录音地址'
+                ];
+                DB::table('jf_talk_log')->insert($data);
+            }
         }
     }
 
