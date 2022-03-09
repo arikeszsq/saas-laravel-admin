@@ -130,6 +130,7 @@ class TalkLogController extends AdminController
                 $data = [
                     'mobile' => $mobile,
                     'talk_time' => $talk_time,
+                    'updated_at' => date('Y-m-d H:i:s', time()),
                 ];
                 DB::table('jf_talk_log')->where('excel_user_id', $id)
                     ->where('table_name', $table_name)
@@ -145,6 +146,7 @@ class TalkLogController extends AdminController
                 $data = [
                     'mobile' => $mobile,
                     'talk_time' => $talk_time,
+                    'updated_at' => date('Y-m-d H:i:s', time()),
                 ];
                 DB::table('jf_talk_log')->where('excel_user_id', $id)
                     ->where('table_name', 'jf_user_excel')
