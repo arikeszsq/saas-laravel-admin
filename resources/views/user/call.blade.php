@@ -251,6 +251,8 @@
             $('.form-company-name').val(company_name);
             $('.form-user-name').val(user_name);
             $('.form-mobile').val(mobile);
+            var excel_user_id = $(id_name).parent().data('id');
+            $('#excel-user_id').val(excel_user_id);
 
             callout_cb = 'CallOut_cb_' + new Date().getTime();
             var action = {
