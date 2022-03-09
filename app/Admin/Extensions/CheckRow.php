@@ -7,12 +7,14 @@ use Encore\Admin\Admin;
 class CheckRow
 {
     protected $row;
+    protected $id;
     protected $mobile;
     protected $table_name;
 
     public function __construct($row,$table_name)
     {
         $this->row = $row;
+        $this->id = $row['id'];
         $this->mobile = $row['mobile'];
         $this->table_name = $table_name;
     }
@@ -28,7 +30,8 @@ class CheckRow
         }
 
         $('.call_mobile').on('click', function () {
-            var number = $(this).data('id');
+            var id = $(this).data('id');
+            var number = $(this).data('mobile');
             var table_name = $(this).data('table_name');
             if (!number) {
                 alert('请先选择需要拨打的用户号码');
@@ -59,7 +62,6 @@ class CheckRow
                     } else if (param.status == 'CallEnd') {
                         console.log("通话结束/或者挂断事件");
                         var cdr = param.CDR;
-                        var id = $('#excel-user_id').val();
                         ajaxSync(id, cdr, table_name);
                     }
                 }
@@ -129,8 +131,8 @@ SCRIPT;
         Admin::script($this->script());
 //        Admin::js('/static/js/app.js');
 
-        return "<a class='btn btn-xs btn-success call_mobile' data-id='{$this->mobile}' data-table_name='{$this->table_name}'><i class=\"fa fa-phone\" aria-hidden=\"true\"></i>拨号</a>
-<a class='btn btn-xs btn-danger hang_mobile' data-id='{$this->mobile}'>挂机</a>";
+        return "<a class='btn btn-xs btn-success call_mobile' data-id='{$this->id}' data-mobile='{$this->mobile}' data-table_name='{$this->table_name}'><i class=\"fa fa-phone\" aria-hidden=\"true\"></i>拨号</a>
+<a class='btn btn-xs btn-danger hang_mobile' data-mobile='{$this->mobile}'>挂机</a>";
 
     }
 
