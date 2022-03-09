@@ -189,7 +189,7 @@ class TalkLogController extends AdminController
                 'excel_user_name' => $user->user_name,
                 'created_at' => date('Y-m-d H:i:s', time()),
                 'table_name' => $table_name,
-                'record_url' => env('QINIU_YUMING') . $record
+                'record_url' => env('QINIU_YUMING') . '/' . $record . '.mp3'
             ];
             DB::table('jf_talk_log')->insert($data);
 
@@ -202,7 +202,7 @@ class TalkLogController extends AdminController
                 'excel_user_name' => $user_excel->user_name,
                 'created_at' => date('Y-m-d H:i:s', time()),
                 'table_name' => 'jf_user_excel',
-                'record_url' => env('QINIU_YUMING') . $record
+                'record_url' => env('QINIU_YUMING') . '/' . $record . '.mp3'
             ];
             DB::table('jf_talk_log')->insert($data);
         }
