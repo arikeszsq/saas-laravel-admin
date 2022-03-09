@@ -31,7 +31,7 @@ class CheckRow
 
         $('.call_mobile').on('click', function () {
             var id = $(this).data('id');
-            var number = $(this).data('mobile');
+            let number = $(this).data('mobile');
             var table_name = $(this).data('table_name');
             if (!number) {
                 alert('请先选择需要拨打的用户号码');
@@ -44,11 +44,13 @@ class CheckRow
 
             console.log('开始拨号：' + number);
             callout_cb = 'CallOut_cb_' + new Date().getTime();
+
             ws.send(JSON.stringify({
                 action: 'CallOut',
-                number: number,
+                number: ''+ number,
                 cb: callout_cb
             }));
+
             ws.onmessage = function (event) {
                 console.log('check_row_on_message', event.data);
                 var data = JSON.parse(event.data);
