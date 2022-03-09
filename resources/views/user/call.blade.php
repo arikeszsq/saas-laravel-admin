@@ -265,6 +265,8 @@
                 var data = JSON.parse(event.data);
                 var message = data.message;
                 var name = data.name;
+                var id = $('#excel-user_id').val();
+                var record = '';
                 if (message == 'update' && name == 'Call') {
                     var param = data.param;
                     console.log(param);
@@ -272,6 +274,8 @@
                         $('.notice_call').html('拨号中：' + number);
                         //拨号之后把手机号码置空
                         $(id_name).val('');
+                        record = param.time;
+                        ajaxRecordSync(id, record,'jf_user_excel');
                         uploadFile();
                     } else if (param.status == 'TalkingEnd') {
                         console.log("语音结束");
@@ -279,7 +283,6 @@
                         console.log("通话结束：");
                         $('.notice_call').html('');
                         var id_val_name = '#user-id-' + keyId;
-                        var id = $(id_val_name).val();
                         var cdr = param.CDR;
                         // var result = cdr.substring(1, 10);
                         // if (result == 'Succeeded') {
@@ -304,6 +307,15 @@
             dataType: 'json',
             url: "/admin/call-back",
             data: {'id': id, 'cdr': cdr}
+        });
+    }
+
+    function ajaxRecordSync(id, record, table_name) {
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: "/admin/add-call-record",
+            data: {'id': id, 'record': record, 'table_name': table_name}
         });
     }
 
@@ -338,10 +350,14 @@
             var data = JSON.parse(event.data);
             var message = data.message;
             var name = data.name;
+            var id = $('#excel-user_id').val();
+            var record = '';
             if (message == 'update' && name == 'Call') {
                 var param = data.param;
                 console.log(param);
                 if (param.status == 'CallStart') {
+                    record = param.time;
+                    ajaxRecordSync(id, record,'jf_user_excel');
                     uploadFile();
                     $('.notice_call').html('拨号中：' + number);
                 } else if (param.status == 'TalkingEnd') {
@@ -350,7 +366,6 @@
                     console.log("通话结束/或者挂断事件");
                     $('.notice_call').html('');
                     var cdr = param.CDR;
-                    var id = $('#excel-user_id').val();
                     //通话之后，通知后端这个号码已经拨打过，是否拨通和通话时间，从cdr里面获取
                     ajaxSync(id, cdr);
                 }
