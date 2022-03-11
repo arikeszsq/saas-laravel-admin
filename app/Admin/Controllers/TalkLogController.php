@@ -18,7 +18,7 @@ class TalkLogController extends AdminController
      *
      * @var string
      */
-    protected $title = 'TalkLog';
+    protected $title = '通话记录';
 
     /**
      * Make a grid builder.
@@ -54,6 +54,7 @@ class TalkLogController extends AdminController
             $actions->disableEdit();    // 去掉编辑
         });
 
+        $grid->model()->orderBy('id', 'desc');
         $grid->column('id', __('Id'))->sortable();
         $grid->column('excel_user_name', __('姓名'));
         $grid->column('mobile', __('手机号'));

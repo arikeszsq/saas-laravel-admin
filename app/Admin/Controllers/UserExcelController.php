@@ -18,7 +18,7 @@ class UserExcelController extends AdminController
      *
      * @var string
      */
-    protected $title = 'UserExcel';
+    protected $title = '基础用户';
 
     /**
      * Make a grid builder.
@@ -52,6 +52,7 @@ class UserExcelController extends AdminController
             });
         });
 
+        $grid->model()->orderBy('id', 'desc');
         $grid->column('id', __('Id'))->sortable();
         $grid->column('company_name', __('公司名称'));
         $grid->column('user_name', __('姓名'));
