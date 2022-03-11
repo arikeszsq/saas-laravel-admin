@@ -82,12 +82,16 @@
         padding-left: 20px;
         padding-right: 20px;
         border-radius: 20px;
-        width: 200px;
+        width: 330px;
         height: 60px;
         line-height: 60px;
         background-color: lightblue;
         font-size: 18px;
         color: whitesmoke;
+    }
+
+    .already_called{
+        background-color: #ffa0a2;
     }
 </style>
 
@@ -291,6 +295,7 @@
                         $('.notice_call').html('拨号中：' + number);
                         //拨号之后把手机号码置空
                         $(id_name).val('');
+                        $(id_name).parent().addClass('already_called');
                         record = param.time;
                         ajaxRecordSync(id, record, 'jf_user_excel');
                         uploadFile();
@@ -377,6 +382,11 @@
                     ajaxRecordSync(id, record, 'jf_user_excel');
                     uploadFile();
                     $('.notice_call').html('拨号中：' + number);
+
+
+                    var id_name = '#user-mobile-' + id;
+                    $(id_name).val('');
+                    $(id_name).parent().addClass('already_called');
                 } else if (param.status == 'TalkingEnd') {
                     console.log("语音结束");
                 } else if (param.status == 'CallEnd') {
