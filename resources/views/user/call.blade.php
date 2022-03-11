@@ -91,8 +91,13 @@
     }
 
     .already_called{
-        background-color: #ffa0a2;
+        background-color: #f9f9f9;
     }
+
+    .already_called span {
+        color: #ccc;
+    }
+
 </style>
 
 <script>
