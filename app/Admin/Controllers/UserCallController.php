@@ -17,7 +17,11 @@ class UserCallController extends Controller
 
     public function index(Content $content)
     {
+        $web_id = static::webId();
+        $user_id = static::userId();
         $users = UserExcel::query()
+            ->where('web_id',$web_id)
+            ->where('master_id',$user_id)
             ->where('call_no', 0)
             ->orderBy('id', 'desc')
             ->limit(200)
