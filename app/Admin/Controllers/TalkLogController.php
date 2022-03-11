@@ -31,6 +31,7 @@ class TalkLogController extends AdminController
 
         $grid->disableCreateButton();
 
+
         if (!self::isSuperAdmin()) {
             $grid->model()->where('web_id', static::webId());
             if (!self::isWebAdmin()) {
@@ -49,6 +50,8 @@ class TalkLogController extends AdminController
             });
         });
 
+        $grid->model()->where('mobile','>',0);
+
         $grid->actions(function ($actions) {
             $actions->disableDelete();// 去掉删除
             $actions->disableEdit();    // 去掉编辑
@@ -58,7 +61,7 @@ class TalkLogController extends AdminController
         $grid->column('id', __('Id'))->sortable();
         $grid->column('excel_user_name', __('姓名'));
         $grid->column('mobile', __('手机号'));
-        $grid->column('talk_time', __('通话时长'));
+        $grid->column('talk_time', __('通话时长(单位：秒)'));
         $grid->column('created_at', __('创建时间'));
         $grid->column('record_url', __('录音文件'));
 
