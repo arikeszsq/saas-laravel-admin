@@ -12,7 +12,7 @@
 <body>
 <div class="container-01 clearfix">
     <div class="right list_item user-info-list">
-        <li class="li_title"><span>公司名词</span><span>用户名</span><span>手机号</span></li>
+        <li class="li_title"><span>公司名称</span><span>用户名</span><span>手机号</span></li>
         <ul>
             @foreach ($users as $k => $val)
                 <li class="user-info"
