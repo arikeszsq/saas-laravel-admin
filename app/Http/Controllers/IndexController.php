@@ -145,20 +145,21 @@ class IndexController extends Controller
 
     public function uploadFile(Request $request)
     {
+        $files = $request->file();
+        var_dump($files);
         var_dump($_FILES);
-        var_dump($_FILES['audio']);
-        print_r($_FILES);
-        print_r($_FILES['audio']);
 
+        print_r($files);
+        print_r($_FILES);
+
+
+        Log::info($files);
         Log::info($_FILES);
 
-        Log::info($_FILES['myFile']);
-
-        Log::info(1111111111111111111111111111);
+        Log::info(666666666666);
         $content = file_get_contents('php://input');
 
         Log::info($content);
-
         Log::info(date('Y-m-d H:i:s', time()));
 
 
