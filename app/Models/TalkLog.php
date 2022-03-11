@@ -14,6 +14,6 @@ class TalkLog extends Model
 
     public function getCreatedAtAttribute($value)
     {
-        return Carbon::parse($value)->format('Y-m-d');
+        return Carbon::parse($value)->format('Y-m-d H:i:s');
     }
 }

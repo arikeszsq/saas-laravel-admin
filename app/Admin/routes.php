@@ -32,6 +32,8 @@ Route::group([
     $router->resource('web-users', WebUserController::class);
     /** 站点大区管理 **/
     $router->resource('areas', AreaController::class);
+    /** 站点部门管理 **/
+    $router->resource('parts', PartController::class);
 
 
     /** 客户 **/
